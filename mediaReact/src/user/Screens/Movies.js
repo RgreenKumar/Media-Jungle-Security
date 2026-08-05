@@ -167,7 +167,7 @@ const MoviesPage = () => {
                           className="item"
                         >
                           <Link
-                            to={userid ? `/watchpage/${video.videoTitle}` : '/UserLogin'}
+                            to={userid ? `/watchpage/${video.id}` : '/UserLogin'}
                             onClick={() => handleEdit(video.id, state.categoryid)}
                           >
                             <img

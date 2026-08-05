@@ -127,18 +127,23 @@ public class VideoController {
             @RequestHeader("Authorization") String token) {
 
         try {
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+            }
             if (!jwtUtil.validateToken(token)) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
             }
             String email = jwtUtil.getUsernameFromToken(token);
+            String username = email;
             Optional<AddUser> opUser = adduserrepository.findByUsername(email);
-
-            if (!opUser.isPresent()) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            if (opUser.isPresent()) {
+                username = opUser.get().getUsername();
+            } else {
+                Optional<UserRegister> opReg = userregisterrepository.findByEmail(email);
+                if (opReg.isPresent()) {
+                    username = opReg.get().getUsername();
+                }
             }
-
-            AddUser user = opUser.get();
-            String username = user.getUsername();
 
             // ── 1. Create unique folder for this video's files ────────────────
             String hashValue = UUID.randomUUID().toString().replace("-", "");

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import API_URL from '../Config';
 import { Dropdown } from 'react-bootstrap';
 import "../css/Sidebar.css";
 import Navbar from './navbar';
@@ -28,7 +29,7 @@ const Social_setting = () => {
   ];
 
   useEffect(() => {
-    axios.get('http://localhost:8080/api/v2/social-settings/first')
+    axios.get(`${API_URL}/api/v2/social-settings/first`)
       .then(response => {
         const data = response.data;
         if (data) {
@@ -60,7 +61,7 @@ const Social_setting = () => {
     };
 
     if (id) {
-      axios.put(`http://localhost:8080/api/v2/social-settings/${id}`, siteSetting)
+      axios.put(`${API_URL}/api/v2/social-settings/${id}`, siteSetting)
         .then(response => {
           console.log('Updated successfully:', response.data);
         })
@@ -68,7 +69,7 @@ const Social_setting = () => {
           console.error('Error updating settings:', error);
         });
     } else {
-      axios.post('http://localhost:8080/api/v2/social-settings', siteSetting)
+      axios.post(`${API_URL}/api/v2/social-settings`, siteSetting)
         .then(response => {
           console.log('Created successfully:', response.data);
           setId(response.data.id);

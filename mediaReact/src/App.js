@@ -107,6 +107,11 @@ import AddAds from './admin/AddAds';
 import Mailsetting from './admin/Mailsetting';
 import ForgetPasswordUser from './user/Screens/ForgetPasswordUser';
 import AdminRouteGuard from './admin/AdminRouteGuard';
+import AccessManagementDashboard from './admin/AccessManagementDashboard';
+import BackupRecoveryDashboard from './admin/BackupRecoveryDashboard';
+import CodeSecurityDashboard from './admin/CodeSecurityDashboard';
+import RiskManagementDashboard from './admin/RiskManagementDashboard';
+import AuditLoggingDashboard from './admin/AuditLoggingDashboard';
 
 const App = () => {
   const location = useLocation();
@@ -297,6 +302,11 @@ const App = () => {
             <Route path='Footer_setting' element= {<Footer_setting/>} />
             <Route path='Banner_setting' element= {<Banner_setting/>} />
             <Route path='container' element ={<Container />} />
+            <Route path='access-management' element={<AccessManagementDashboard />} />
+            <Route path='backup-recovery' element={<BackupRecoveryDashboard />} />
+            <Route path='code-security' element={<CodeSecurityDashboard />} />
+            <Route path='risk-management' element={<RiskManagementDashboard />} />
+            <Route path='audit-logging' element={<AuditLoggingDashboard />} />
             </Route>
             </Route> 
            </Route>

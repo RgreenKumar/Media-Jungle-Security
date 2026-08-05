@@ -250,7 +250,7 @@ Future<void> fetchUserProfile(BuildContext context) async {
                       //SizedBox(height: 15),
                       MyTextField(
                           controller: currentPasswordController,
-                          icon: FontAwesomeIcons.lock,
+                          icon: Icons.lock,
                          suffixIcon: IconButton(onPressed: (){
                               setState(() {
                                 currentVisiblePassword = !currentVisiblePassword;
@@ -266,7 +266,7 @@ Future<void> fetchUserProfile(BuildContext context) async {
                       ),
                       MyTextField(
                           controller: newPasswordController,
-                          icon: FontAwesomeIcons.lock,
+                          icon: Icons.lock,
                           suffixIcon: IconButton(onPressed: (){
                               setState(() {
                                 newVisiblePassword = !newVisiblePassword;
@@ -282,7 +282,7 @@ Future<void> fetchUserProfile(BuildContext context) async {
                       ),
                       MyTextField(
                           controller: confirmPasswordController,
-                          icon: FontAwesomeIcons.lock,
+                          icon: Icons.lock,
                           suffixIcon: IconButton(onPressed: (){
                               setState(() {
                                 confirmVisiblePassword = !confirmVisiblePassword;

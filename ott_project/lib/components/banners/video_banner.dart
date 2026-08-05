@@ -6,7 +6,7 @@ class VideoBanner {
   VideoBanner({required this.id,required this.videoId});
 
   factory VideoBanner.fromJson(Map<String,dynamic> json){
-    return VideoBanner(id: json['id'], videoId: json['videoId']);
+    return VideoBanner(id: json['id'] ?? 0, videoId: json['videoId'] ?? 0);
   }
 
    @override

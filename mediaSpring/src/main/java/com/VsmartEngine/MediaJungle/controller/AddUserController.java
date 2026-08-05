@@ -133,6 +133,9 @@ public class AddUserController {
 	        String username = loginRequest.get("username");
 	        String password = loginRequest.get("password");
 	        Optional<AddUser> userOptional = adduserrepository.findByUsername(username);
+	        if (userOptional.isEmpty()) {
+	            userOptional = adduserrepository.findByEmail(username);
+	        }
 
 	        if (userOptional.isEmpty()) {
 	        	return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"User not found\"}");

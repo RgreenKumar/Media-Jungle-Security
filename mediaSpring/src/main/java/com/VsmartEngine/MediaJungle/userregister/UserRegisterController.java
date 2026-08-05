@@ -31,6 +31,8 @@ import com.VsmartEngine.MediaJungle.LogManagement;
 import com.VsmartEngine.MediaJungle.MailVerification.EmailService;
 import com.VsmartEngine.MediaJungle.compresser.ImageUtils;
 import com.VsmartEngine.MediaJungle.notification.service.NotificationService;
+import com.VsmartEngine.MediaJungle.accessmanagement.service.AccessManagementService;
+import jakarta.servlet.http.HttpServletRequest;
 
 @CrossOrigin()
 @RestController
@@ -48,6 +50,9 @@ public class UserRegisterController {
     
 	@Autowired
     private NotificationService notificationservice;  
+
+	@Autowired
+	private AccessManagementService accessManagementService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserRegisterController.class);
        
@@ -138,61 +143,64 @@ public class UserRegisterController {
         }
     }
   
-    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest) {
+    // ISO 27001 | Module 1: Access Management | Task 1, 3, 5, 7, 9
+    // Description: Authenticates user, checks deprovisioned status, validates MFA if enabled, logs login activity, and registers active session.
+    public ResponseEntity<?> login(@RequestBody Map<String, String> loginRequest, HttpServletRequest request) {
         String email = loginRequest.get("email");
         String password = loginRequest.get("password");
-        BCryptPasswordEncoder passwordEncoderr = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoderr.encode(password);
-        System.out.print(encodedPassword);
+        String mfaCode = loginRequest.get("mfaCode");
+        String remoteAddr = request != null ? request.getRemoteAddr() : "127.0.0.1";
+        String userAgent = request != null ? request.getHeader("User-Agent") : "Unknown";
+
         Optional<UserRegister> userOptional = userregisterrepository.findByEmail(email);
         if (!userOptional.isPresent()) {
-            // User with the provided email doesn't exist
+            accessManagementService.recordLoginActivity(email, "FAILED_USER_NOT_FOUND", remoteAddr, userAgent, "User email not found");
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("{\"message\": \"User not found\"}");
         }
         UserRegister user = userOptional.get();
+
+        // ISO 27001 Task 7: User Deprovisioning Check
+        if ("DEPROVISIONED".equalsIgnoreCase(user.getStatus()) || Boolean.FALSE.equals(user.getAccountNonLocked())) {
+            accessManagementService.recordLoginActivity(email, "FAILED_DEPROVISIONED", remoteAddr, userAgent, "Account is deprovisioned or locked");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("{\"message\": \"Account is deprovisioned or locked. Access denied.\"}");
+        }
+
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            // Incorrect password
+            accessManagementService.recordLoginActivity(email, "FAILED_INVALID_PASSWORD", remoteAddr, userAgent, "Invalid password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("{\"message\": \"Incorrect password\"}");
         }
-        // Generate JWT token
-//        String role = user.getRole(); // Get user role
-        String role = "USER"; // Get user role
-        String jwtToken = jwtUtil.generateToken(email,role);
+
+        // ISO 27001 Task 3: MFA Check
+        if (Boolean.TRUE.equals(user.getMfaEnabled())) {
+            if (mfaCode == null || !accessManagementService.validateMfaCode(email, mfaCode)) {
+                accessManagementService.recordLoginActivity(email, "FAILED_MFA", remoteAddr, userAgent, "Invalid or missing MFA OTP code");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "MFA verification required", "mfaRequired", true));
+            }
+        }
+
+        // ISO 27001 Task 1: Role-Based Access Token
+        String role = user.getRole() != null ? user.getRole() : "USER";
+        String jwtToken = jwtUtil.generateToken(email, role);
+
+        user.setLastLoginAt(LocalDateTime.now());
+        userregisterrepository.save(user);
+
+        // ISO 27001 Task 5: Active Session Registration
+        accessManagementService.createSession(email, jwtToken, remoteAddr, userAgent);
+
+        // ISO 27001 Task 9: Record Successful Login Activity
+        accessManagementService.recordLoginActivity(email, "SUCCESS", remoteAddr, userAgent, null);
+
         Map<String, Object> responseBody = new HashMap<>();
         responseBody.put("token", jwtToken);
         responseBody.put("message", "Login successful");
         responseBody.put("name", user.getUsername());
         responseBody.put("email", user.getEmail());
         responseBody.put("userId", user.getId());
-//        responseBody.put("profile", null); // Simply set image as null without loading it
+        responseBody.put("role", role);
+        responseBody.put("mfaEnabled", user.getMfaEnabled());
 
-        // Check if the user has an expiry date for subscription
-        if (user.getPaymentId() != null && user.getPaymentId().getExpiryDate() != null) {
-            LocalDate expdate = user.getPaymentId().getExpiryDate();
-            LocalDate today = LocalDate.now();
-            String plan = user.getPaymentId().getSubscriptionTitle();
-            
-            if (expdate.minusDays(1).equals(today)) {
-                // Create notification and associate with user
-                String heading = user.getUsername() + ", your " + plan + " subscription validity expires on " + expdate;
-                try {
-                    Long notifyId = notificationservice.createNotification(user.getUsername(), user.getEmail(), heading);
-                    if (notifyId != null) {
-                        notificationservice.notificationuser(notifyId, user.getId());
-                    } else {
-                        // Handle notification creation failure
-                        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\": \"Failed to create notification\"}");
-                    }
-                } catch (Exception e) {
-                    // Handle any exceptions during notification creation
-                	logger.error("", e);
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("{\"message\": \"Error creating notification\"}");
-                }
-            }
-        }
-        // Successful login
         return ResponseEntity.status(HttpStatus.OK).body(responseBody);
     }
 

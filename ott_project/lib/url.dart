@@ -14,5 +14,5 @@
 //home wifi
 //const String baseUrl = 'http://10.50.175.4:8080/api/v2';    
 // Production:
-const String baseUrl = 'https://testott.vsmartengine.com/api/api/v2';
+const String baseUrl = 'http://localhost:8080/api/v2';
   //const String baseUrl = 'http://15.206.61.50:8080/api';

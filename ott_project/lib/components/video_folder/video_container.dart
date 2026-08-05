@@ -13,13 +13,13 @@ class VideoContainer {
   });
 
   factory VideoContainer.fromJson(Map<String, dynamic> json) {
-    var list = json['videoDescriptions'] as List;
+    var list = (json['videoDescriptions'] as List?) ?? [];
     List<VideoDescription> videoDescriptionsList =
         list.map((i) => VideoDescription.fromJson(i)).toList();
 
     return VideoContainer(
-      value: json['value'],
-      categoryId: json['categoryid'],
+      value: json['value'] ?? '',
+      categoryId: json['categoryid'] ?? 0,
       videoDescriptions: videoDescriptionsList,
     );
   }
@@ -63,21 +63,21 @@ class VideoDescription {
 
   factory VideoDescription.fromJson(Map<String, dynamic> json) {
     return VideoDescription(
-      id: json['id'],
-      videoTitle: json['videoTitle'],
-      mainVideoDuration: json['mainVideoDuration'],
-      trailerDuration: json['trailerDuration'],
-      rating: json['rating'],
-      certificateNumber: json['certificateNumber'],
-      videoAccessType: json['videoAccessType'],
-      description: json['description'],
-      productionCompany: json['productionCompany'],
-      certificateName: json['certificateName'],
-      vidofilename: json['vidofilename'],
-      videotrailerfilename: json['videotrailerfilename'],
-      castAndCrewList: List<int>.from(json['castandcrewlist']),
-      tagList: List<int>.from(json['taglist']),
-      categoryList: List<int>.from(json['categorylist'] ?? [] ),
+      id: json['id'] ?? 0,
+      videoTitle: json['videoTitle'] ?? '',
+      mainVideoDuration: json['mainVideoDuration'] ?? '',
+      trailerDuration: json['trailerDuration'] ?? '',
+      rating: json['rating']?.toString() ?? '',
+      certificateNumber: json['certificateNumber'] ?? '',
+      videoAccessType: json['videoAccessType'] ?? false,
+      description: json['description'] ?? '',
+      productionCompany: json['productionCompany'] ?? '',
+      certificateName: json['certificateName'] ?? '',
+      vidofilename: json['vidofilename'] ?? '',
+      videotrailerfilename: json['videotrailerfilename'] ?? '',
+      castAndCrewList: json['castandcrewlist'] != null ? List<int>.from(json['castandcrewlist']) : [],
+      tagList: json['taglist'] != null ? List<int>.from(json['taglist']) : [],
+      categoryList: json['categorylist'] != null ? List<int>.from(json['categorylist']) : [],
     );
   }
 

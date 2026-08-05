@@ -9,7 +9,7 @@ import API_URL from '../Config';
 export const Test = () => {
   // const handleGoogleLogin = () => {
   //   // Redirect to the Spring Boot endpoint that starts the OAuth flow
-  //   window.location.href = 'http://localhost:8080/oauth2/authorization/google';
+  //   window.location.href = `${API_URL}/oauth2/authorization/google`;
   // };
 
   const [message, setMessage] = useState('Tell me a joke');
@@ -23,7 +23,7 @@ export const Test = () => {
 
     // Create an EventSource to listen for streaming responses from your endpoint.
     const eventSource = new EventSource(
-      `http://localhost:8080/ai/generateStream?message=${encodeURIComponent(message)}`
+      `${API_URL}/ai/generateStream?message=${encodeURIComponent(message)}`
     );
 
     eventSource.onmessage = (event) => {

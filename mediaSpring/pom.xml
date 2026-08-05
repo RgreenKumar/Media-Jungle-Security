@@ -146,17 +146,11 @@
 	<build>
 		<finalName>media</finalName>
 		<plugins>
-		 <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <configuration>
-                    <mainClass>com.VsmartEngine.MediaJungle.MediaSpringApplication</mainClass> <!-- Main class with the main method -->
-                </configuration>
-            </plugin>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+					<mainClass>com.VsmartEngine.MediaJungle.MediaSpringApplication</mainClass>
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>

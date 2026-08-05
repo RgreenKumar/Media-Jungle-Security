@@ -707,6 +707,36 @@ const handlePlanClick = () => {
             <span> Settings</span>
           </Link>
       </li>
+      <li className={`nav-item  ${activeLink === "/admin/access-management" ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/access-management" onClick={() => handleClick("/admin/access-management")}>
+          <i className="bi bi-shield-lock-fill"></i>
+            <span> Access Management (ISO)</span>
+          </Link>
+      </li>
+      <li className={`nav-item  ${activeLink === "/admin/backup-recovery" ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/backup-recovery" onClick={() => handleClick("/admin/backup-recovery")}>
+          <i className="bi bi-hdd-network-fill"></i>
+            <span> Backup & Recovery (ISO)</span>
+          </Link>
+      </li>
+      <li className={`nav-item  ${activeLink === "/admin/code-security" ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/code-security" onClick={() => handleClick("/admin/code-security")}>
+          <i className="bi bi-code-slash"></i>
+            <span> Code Level Security (ISO)</span>
+          </Link>
+      </li>
+      <li className={`nav-item  ${activeLink === "/admin/risk-management" ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/risk-management" onClick={() => handleClick("/admin/risk-management")}>
+          <i className="bi bi-exclamation-triangle-fill"></i>
+            <span> Risk Management (ISO)</span>
+          </Link>
+      </li>
+      <li className={`nav-item  ${activeLink === "/admin/audit-logging" ? 'active' : ''}`}>
+          <Link className="nav-link" to="/admin/audit-logging" onClick={() => handleClick("/admin/audit-logging")}>
+          <i className="bi bi-list-task"></i>
+            <span> Audit Logging (ISO)</span>
+          </Link>
+      </li>
       <li className={`nav-item  ${activeLink === "/admin/About_us" ? 'active' : ''}`} onClick={() => handleClick("/admin/About_us")}>
           <Link className="nav-link" >
           <i class="bi bi-house"></i>

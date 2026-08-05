@@ -41,6 +41,30 @@ public class UserRegister {
 	@Column(name="date")
 	private LocalDate date ;
 	
+	// ISO 27001 | Module 1: Access Management | Task 1: User Role Management
+	// Description: Stores user access control role (USER, SECURITY_ADMIN, SYSTEM_ADMIN, AUDITOR, ADMIN).
+	@Column(name="role")
+	private String role = "USER";
+
+	// ISO 27001 | Module 1: Access Management | Task 3: Multi-Factor Authentication
+	// Description: Secret key and flag tracking OTP-based multi-factor authentication enablement.
+	@Column(name="mfa_secret")
+	private String mfaSecret;
+
+	@Column(name="mfa_enabled")
+	private Boolean mfaEnabled = false;
+
+	// ISO 27001 | Module 1: Access Management | Task 7: User Deprovisioning
+	// Description: User lifecycle status (ACTIVE, DEPROVISIONED, SUSPENDED) and lock state for access control.
+	@Column(name="status")
+	private String status = "ACTIVE";
+
+	@Column(name="account_non_locked")
+	private Boolean accountNonLocked = true;
+
+	@Column(name="last_login_at")
+	private java.time.LocalDateTime lastLoginAt;
+
 	@Lob
 	@Column(name="profile" ,length=1000000)
 	private byte[] profile;
@@ -171,5 +195,53 @@ public class UserRegister {
 
 	public void setWatchlaterIds(Set<Long> watchlaterIds) {
 		this.watchlaterIds = watchlaterIds;
+	}
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public String getMfaSecret() {
+		return mfaSecret;
+	}
+
+	public void setMfaSecret(String mfaSecret) {
+		this.mfaSecret = mfaSecret;
+	}
+
+	public Boolean getMfaEnabled() {
+		return mfaEnabled != null ? mfaEnabled : false;
+	}
+
+	public void setMfaEnabled(Boolean mfaEnabled) {
+		this.mfaEnabled = mfaEnabled;
+	}
+
+	public String getStatus() {
+		return status != null ? status : "ACTIVE";
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public Boolean getAccountNonLocked() {
+		return accountNonLocked != null ? accountNonLocked : true;
+	}
+
+	public void setAccountNonLocked(Boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
+	public java.time.LocalDateTime getLastLoginAt() {
+		return lastLoginAt;
+	}
+
+	public void setLastLoginAt(java.time.LocalDateTime lastLoginAt) {
+		this.lastLoginAt = lastLoginAt;
 	}
 }

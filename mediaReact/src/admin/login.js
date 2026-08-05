@@ -137,41 +137,40 @@ const handleSubmit = async (e) => {
         sessionStorage.setItem("username", name);
         sessionStorage.setItem('tokenn', jwtToken);
         sessionStorage.setItem('adminId', userId);
-        sessionStorage.setItem('name', true);
+        sessionStorage.setItem('name', 'true'); // ✅ FIX: must be string 'true' — PrivateRoutes checks a === 'true'
         sessionStorage.setItem('role', role);
 
-        // console.log(name, jwtToken, userId,role);
-
         // Navigate to the dashboard after successful login
-        navigate('/admin/Dashboard');
+        // ✅ FIX: Changed '/admin/Dashboard' → '/admin/dashboard' (React Router is case-sensitive)
+        navigate('/admin/dashboard');
       } catch (jsonError) {
         console.error('Error parsing JSON:', jsonError);
-        throw jsonError;
-        // Swal.fire({
-        //   icon: 'error',
-        //   title: 'Login Error',
-        //   text: 'An error occurred while processing the response. Please try again later.',
-        // });
+        Swal.fire({
+          icon: 'error',
+          title: 'Login Error',
+          text: 'An error occurred while processing the response. Please try again later.',
+        });
       }
     } else {
       // Handle invalid username or password based on status code
       const errorData = await response.json().catch(() => ({})); // Handle cases where response is not JSON
       const message = errorData.message || 'Invalid username or password';
 
-      // Swal.fire({
-      //   icon: 'error',
-      //   title: 'Login Failed',
-      //   text: message,
-      // });
+      // ✅ FIX: Re-enabled Swal error dialog so user sees login failure reason
+      Swal.fire({
+        icon: 'error',
+        title: 'Login Failed',
+        text: message,
+      });
     }
   } catch (error) {
     console.error('Error during login:', error);
-    throw error;
-    // Swal.fire({
-    //   icon: 'error',
-    //   title: 'Login Error',
-    //   text: 'An error occurred during login. Please try again later.',
-    // });
+    // ✅ FIX: Re-enabled Swal error dialog and removed 'throw error' which crashed the component
+    Swal.fire({
+      icon: 'error',
+      title: 'Login Error',
+      text: 'An error occurred during login. Please try again later.',
+    });
   }
 };
 

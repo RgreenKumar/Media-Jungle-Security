@@ -13,7 +13,7 @@ const Userplayer = () => {
   const [submenu, setSubmenu] = useState(null);
 
   useEffect(() => {
-    if (!videoRef.current || !id) return;
+    if (!videoRef.current || !id || id === "null" || id === "undefined") return;
 
     // ✅ Use ONLY dash.js — do NOT also create a Video.js player on the same element.
     // When both are attached they fight over the <video> element:
@@ -48,6 +48,27 @@ const Userplayer = () => {
       }
     };
   }, [id]);
+
+  if (!id || id === "null" || id === "undefined") {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          background: "#000",
+          color: "rgba(255,255,255,0.85)",
+          fontFamily: "sans-serif",
+          fontSize: "18px",
+          textAlign: "center",
+          padding: "20px",
+        }}
+      >
+        No video selected. Please return to the Home page and select a movie to play.
+      </div>
+    );
+  }
 
   // ── Quality change ────────────────────────────────────────────────────────
   const handleQualityChange = (qualityId) => {

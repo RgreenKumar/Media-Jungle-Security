@@ -8,7 +8,7 @@ class Category {
   });
 
   factory Category.fromJson(Map<String, dynamic> json) {
-    return Category(id: json['category_id'], category_name: json['categories']);
+    return Category(id: json['category_id'] ?? 0, category_name: json['categories'] ?? '');
   }
 
   @override

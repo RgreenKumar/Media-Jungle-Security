@@ -152,7 +152,7 @@ public class VideoContainerController {
 
 	        // Step 5: Filter videos by the current category ID
 	        for (VideoDescription video : videos) {
-	            if (video.getCategorylist().contains(categoryId)) {
+	            if (video.getCategorylist() != null && video.getCategorylist().contains(categoryId)) {
 	                matchingVideos.add(video); // Add full video description to the list
 	            }
 	        }

@@ -91,6 +91,10 @@ class _MoviePageState extends State<MoviePage> {
     } catch (e) {
       print('Error fetching movies: $e');
       if (!mounted) return;
+      // ✅ FIX: Set _isLoading = false so UI recovers from the error instead of spinning forever
+      setState(() {
+        _isLoading = false;
+      });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
             content: Text('Failed to load movies. Please try again.')),

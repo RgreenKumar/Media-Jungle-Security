@@ -331,8 +331,8 @@ class _SignUpState extends State<SignUp> {
                                 backgroundColor:
                                     Colors.grey.shade200.withOpacity(0.3),
                                 child: _imageFile == null
-                                    ? Icon(FontAwesomeIcons.user,
-                                        color: kWhite, size: size.width * 0.11)
+                                    ? Icon(Icons.person,
+                                         color: kWhite, size: size.width * 0.11)
                                     : CircleAvatar(
                                         radius: size.width * 0.13,
                                         backgroundImage: FileImage(_imageFile!),
@@ -357,7 +357,7 @@ class _SignUpState extends State<SignUp> {
                     // Username
                     MyTextField(
                       controller: usernameController,
-                      icon: FontAwesomeIcons.user,
+                      icon: Icons.person,
                       hint: 'User Name',
                       inputType: TextInputType.name,
                       inputAction: TextInputAction.next,
@@ -387,8 +387,8 @@ class _SignUpState extends State<SignUp> {
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(color: Colors.white54),
-                                prefixIcon: const Icon(
-                                    FontAwesomeIcons.envelope,
+                                 prefixIcon: const Icon(
+                                    Icons.email,
                                     color: Colors.white),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:
@@ -481,7 +481,7 @@ class _SignUpState extends State<SignUp> {
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(color: Colors.white54),
-                                prefixIcon: const Icon(FontAwesomeIcons.key,
+                                 prefixIcon: const Icon(Icons.vpn_key,
                                     color: Colors.white),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:
@@ -566,7 +566,7 @@ class _SignUpState extends State<SignUp> {
                     // Mobile number
                     MyTextField(
                       controller: mobilenumberController,
-                      icon: FontAwesomeIcons.phone,
+                      icon: Icons.phone,
                       hint: 'Mobile Number',
                       inputType: TextInputType.number,
                       inputAction: TextInputAction.next,
@@ -585,7 +585,7 @@ class _SignUpState extends State<SignUp> {
                     // Password
                     MyTextField(
                       controller: passwordController,
-                      icon: FontAwesomeIcons.lock,
+                      icon: Icons.lock,
                       hint: 'Password',
                       inputType: TextInputType.visiblePassword,
                       inputAction: TextInputAction.next,
@@ -618,7 +618,7 @@ class _SignUpState extends State<SignUp> {
                     // Confirm Password
                     MyTextField(
                       controller: confirmpasswordController,
-                      icon: FontAwesomeIcons.lock,
+                      icon: Icons.lock,
                       hint: 'Confirm Password',
                       inputType: TextInputType.visiblePassword,
                       inputAction: TextInputAction.done,

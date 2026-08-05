@@ -84,7 +84,7 @@ public class FFmpegService {
                 "-g", "60", "-sc_threshold", "0", "-keyint_min", "60",
 
                 // ── Audio ──────────────────────────────────────────────────
-                "-map", "0:a:0", "-b:a", "128k", "-c:a", "aac",
+                "-map", "0:a:0?", "-b:a", "128k", "-c:a", "aac",
 
                 // ── DASH manifest ──────────────────────────────────────────
                 "-use_timeline", "1", "-use_template", "1",
@@ -157,7 +157,7 @@ public class FFmpegService {
 
         List<String> audioCmd = Arrays.asList(
                 ffmpegPath, "-i", inputFile,
-                "-map", "0:a:0", "-c:a", "copy",
+                "-map", "0:a:0?", "-c:a", "copy",
                 "-f", "mp4", outputDir + "/audio.mp4"
         );
         runProcess(audioCmd, "Audio-extract");

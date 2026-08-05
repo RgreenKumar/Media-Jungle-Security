@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -1008,8 +1009,8 @@ public ResponseEntity<HttpStatus> deleteTenure(@PathVariable long id){
 
 	@PostMapping("/login")
 	@Transactional
-	public ResponseEntity<?> userlogin(@RequestBody Map<String, String> loginRequest) {
-		return UserRegisterController.login(loginRequest);
+	public ResponseEntity<?> userlogin(@RequestBody Map<String, String> loginRequest, HttpServletRequest request) {
+		return UserRegisterController.login(loginRequest, request);
 	}
 
 	@PostMapping("/logout")

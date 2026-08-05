@@ -21,43 +21,48 @@ const LibraryScreen = () => {
   const fetchWatchLater = async () => {
     try {
       const user = Number(userid);
+      if (!user) return;
       const response = await axios.get(`${API_URL}/api/v2/${user}/Watchlater`);
-      setWatchlater(response.data);
+      setWatchlater(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
       console.error('Error fetching Watch Later videos:', error);
-      throw error;
+      setWatchlater([]);
     }
   };
 
   const fetchlikedmusic = async () => {
     try {
       const user = Number(userid);
+      if (!user) return;
       const response = await axios.get(`${API_URL}/api/v2/${user}/UserAudios`);
-      setLikesSongs(response.data);
+      setLikesSongs(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error('Error fetching Watch Later videos:', error);
-      throw error;
+      console.error('Error fetching liked music:', error);
+      setLikesSongs([]);
     }
   };
 
   const fetchPlaylist = async () => {
     try {
       const user = Number(userid);
+      if (!user) return;
       const response = await axios.get(`${API_URL}/api/v2/user/${user}/playlists`);
-      setPlaylist(response.data);
+      setPlaylist(Array.isArray(response.data) ? response.data : []);
     } catch (error) {
-      console.error('Error fetching Watch Later videos:', error);
-      throw error;
+      console.error('Error fetching playlists:', error);
+      setPlaylist([]);
     }
   };
 
-
-
   useEffect(() => {
+    if (!userid) {
+      navigate('/UserLogin');
+      return;
+    }
     fetchWatchLater();
     fetchlikedmusic();
     fetchPlaylist();
-  }, []);
+  }, [userid, navigate]);
 
   // console.log("watchLater",watchLater);
   // console.log("likedSongs",likedSongs);

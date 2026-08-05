@@ -211,6 +211,7 @@ const NavBar = () => {
                   <NavLink to="/" className={Hover}>Movies</NavLink>
                   <NavLink to="/AudioHomeScreen" className={Hover}>Music</NavLink>
                   <NavLink to="/libraryScreen" className={Hover}>Library</NavLink>
+                  <NavLink to="/admin" className={Hover}>Admin Portal</NavLink>
               </div>
               
            
@@ -266,6 +267,9 @@ const NavBar = () => {
                           {showDropdown && (
                               <div className="absolute right-0 mt-2 bg-red-600 rounded shadow-lg">
                                   <button className="block w-full py-2 px-4 text-left text-white" onClick={handleprofile}>Profile</button>
+                                  {sessionStorage.getItem("role") === "ADMIN" && (
+                                      <Link to="/admin/Dashboard" className="block w-full py-2 px-4 text-left text-white hover:bg-red-800">Admin Dashboard</Link>
+                                  )}
                                   <button className="block w-full py-2 px-4 text-left text-white" onClick={handleLogout}>Logout</button>
                               </div>
                           )}
@@ -292,6 +296,7 @@ const NavBar = () => {
                       <NavLink to="/" className={Hover}>Movies</NavLink>
                       <NavLink to="/AudioHomeScreen" className={Hover}>Music</NavLink>
                       <NavLink to="/libraryScreen" className={Hover}>Library</NavLink>
+                      <NavLink to="/admin" className={Hover}>Admin Portal</NavLink>
                       {isFreshUser ? (
                           <NavLink to="/PlanDetails" className="bg-new hover:bg-red-900 text-white py-2 px-4 rounded-lg transition duration-300 ease-in-out">SUBSCRIBE</NavLink>
                       ) : isExpired ? (

@@ -8,39 +8,32 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+
 import com.VsmartEngine.MediaJungle.googleLogin.OAuth2LoginSuccessHandler;
 
-//@Configuration
+@Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 	
-//	 @Autowired
-//	    private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-//	 
-//	 
-//
-//	 @Bean
-//	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//	        http
-//	            // Public endpoints
-//	            .authorizeHttpRequests(authorize -> authorize
-////	                .requestMatchers("/", "/login**", "/error").permitAll()
-//	                // All other endpoints require authentication
-////	                .anyRequest().authenticated()
-//	            		.anyRequest().permitAll()
-//	            )
-//	            // OAuth2 login configuration
-//	            .oauth2Login(oauth2 -> oauth2
-//	                .loginPage("/oauth2/authorization/google")
-//	                .successHandler(oAuth2LoginSuccessHandler)
-//	            )
-//	            // Enable CORS if needed
-//	            .cors(Customizer.withDefaults())
-//	            // Disable CSRF for simplicity (adjust for production)
-//	            .csrf(csrf -> csrf.disable())
-//	            // Use stateful session management (so that the user is stored in session)
-//	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
-//
-//	        return http.build();
-//	    }
+	 @Bean
+	    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+	        http
+	            .cors(cors -> cors.configurationSource(request -> {
+	                var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+	                corsConfiguration.setAllowedOriginPatterns(java.util.List.of("*"));
+	                corsConfiguration.setAllowedMethods(java.util.List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+	                corsConfiguration.setAllowedHeaders(java.util.List.of("*"));
+	                corsConfiguration.setAllowCredentials(true);
+	                return corsConfiguration;
+	            }))
+	            .csrf(csrf -> csrf.disable())
+	            .authorizeHttpRequests(authorize -> authorize
+	                .anyRequest().permitAll()
+	            )
+	            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED));
+
+	        return http.build();
+	    }
 	}
 

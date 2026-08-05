@@ -13,6 +13,9 @@ public class ImageUtils {
 	private static final Logger logger = LoggerFactory.getLogger(ImageUtils.class);
 
 	public static byte[] compressImage(byte[] data) {
+		if (data == null || data.length == 0) {
+			return new byte[0];
+		}
         Deflater deflater = new Deflater();
         deflater.setLevel(Deflater.BEST_COMPRESSION);
         deflater.setInput(data);
@@ -34,6 +37,9 @@ public class ImageUtils {
     }
 	
 	public static byte[] decompressImage(byte[] data) {
+		if (data == null || data.length == 0) {
+			return new byte[0];
+		}
         Inflater inflater = new Inflater();
         inflater.setInput(data);
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream(data.length);
@@ -49,6 +55,7 @@ public class ImageUtils {
         }
         return outputStream.toByteArray();
     }
+
 }
 
 

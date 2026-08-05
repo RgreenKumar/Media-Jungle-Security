@@ -166,46 +166,48 @@ public class LicenseController {
 		
 
 		public ResponseEntity<Integer> count() {
-			
 			Iterable<License> licenseIterable = licenseRepository.findAll();
-	    	List<License> licenseList = StreamSupport.stream(licenseIterable.spliterator(), false)
-	    	                                         .collect(Collectors.toList());
-	    	
+			List<License> licenseList = StreamSupport.stream(licenseIterable.spliterator(), false)
+					.collect(Collectors.toList());
+			
 			Long count = videodescription.count();
-			String courseString=" ";
-//			System.out.println("out side for"+courseString==null);
-			for (License license : licenseList) {
-				
-				courseString=license.getCourse();
+			
+			if (licenseList.isEmpty()) {
+				if (count < 1000) {
+					return new ResponseEntity<>(200, HttpStatus.OK);
+				} else {
+					return new ResponseEntity<>(401, HttpStatus.BAD_REQUEST);
+				}
 			}
-			Long course=0l;
-			System.out.println(courseString.isEmpty());
-			if(!(courseString.isEmpty())) {
-				course = Long.parseLong(courseString);
-				logger.info(course.toString());
-				
+
+			String courseString = " ";
+			for (License license : licenseList) {
+				courseString = license.getCourse();
 			}
 			
-			if(count<course) {
+			courseString = courseString.trim();
+			Long course = 0L;
+			if (!courseString.isEmpty()) {
+				try {
+					course = Long.parseLong(courseString);
+				} catch (NumberFormatException e) {
+					logger.error("Failed to parse license course count: " + courseString, e);
+					course = 1000L;
+				}
+			} else {
+				return new ResponseEntity<>(200, HttpStatus.OK);
+			}
+			
+			if (count < course) {
 				logger.info("-------------------------------------------------------");
 				logger.info("ADD course");
 				logger.info("-------------------------------------------------------");
-		    return new ResponseEntity<>(200, HttpStatus.OK);
-			}
-			
-//			else if(!(licenseList.isEmpty())&&courseString.isEmpty()) {
-//				logger.info("-------------------------------------------------------");
-//				logger.info("unlimited course");
-//				logger.info("-------------------------------------------------------");
-//			    return new ResponseEntity<>(200, HttpStatus.OK);
-//			}
-			else
-			{
+				return new ResponseEntity<>(200, HttpStatus.OK);
+			} else {
 				logger.info("-------------------------------------------------------");
 				logger.info("limited reached");
-				 return new ResponseEntity<>(401, HttpStatus.BAD_REQUEST);
+				return new ResponseEntity<>(401, HttpStatus.BAD_REQUEST);
 			}
-				
 		}
 		
 		 public boolean getall(){
