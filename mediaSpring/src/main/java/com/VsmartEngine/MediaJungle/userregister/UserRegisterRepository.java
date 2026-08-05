@@ -27,4 +27,10 @@ public interface UserRegisterRepository extends JpaRepository<UserRegister, Long
 	List<UserRegisterDTO> findUsersRegisteredWithinLast15Days(LocalDate startDate);
 	 Optional<UserRegister> findById(Long userId);
 //	 Optional<UserRegister> findByUserId(Long userId);
+
+	 // GDPR-TASK-16: Support for the automated data-retention job (see DataRetentionScheduler /
+	 // GDPR-TASK-17). Finds accounts that never completed registration consent and are older
+	 // than the cut-off date, so leftover/abandoned personal data is not kept indefinitely
+	 // (GDPR Art. 5(1)(e) - storage limitation).
+	 List<UserRegister> findByConsentGivenFalseAndDateBefore(LocalDate cutoffDate);
 }

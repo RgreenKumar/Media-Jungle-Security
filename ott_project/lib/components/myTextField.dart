@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:ott_project/components/pallete.dart';
 
 class MyTextField extends StatefulWidget {
 
-  final IconData icon;
+  final Object icon;
   IconButton? suffixIcon;
   final String hint;
   final TextEditingController? controller;
@@ -62,11 +63,17 @@ class _MyTextFieldState extends State<MyTextField> {
                       prefixIcon: Padding(
                         padding:
                             const EdgeInsets.only(left: 20, right: 10, top: 0),
-                        child: Icon(
-                          widget.icon,
-                          size: 20,
-                          color: Colors.white.withOpacity(0.9),
-                        ),
+                        child: widget.icon is FaIconData
+                            ? FaIcon(
+                                widget.icon as FaIconData,
+                                size: 20,
+                                color: Colors.white.withOpacity(0.9),
+                              )
+                            : Icon(
+                                widget.icon as IconData,
+                                size: 20,
+                                color: Colors.white.withOpacity(0.9),
+                              ),
                       ),
                       suffixIcon: widget.suffixIcon,
                       suffix: widget.suffix,

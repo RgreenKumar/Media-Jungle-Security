@@ -30,11 +30,13 @@ class _ForgetPasswordState extends State<ForgetPassword> {
 
    bool confirmVisiblePassword = false;
 
- void initState(){
-  visiblePassword = false;
-  confirmVisiblePassword = false;
-  _loadSavedEmail();
- }
+  @override
+  void initState() {
+    super.initState();
+    visiblePassword = false;
+    confirmVisiblePassword = false;
+    _loadSavedEmail();
+  }
 
  Future<void> _loadSavedEmail() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();

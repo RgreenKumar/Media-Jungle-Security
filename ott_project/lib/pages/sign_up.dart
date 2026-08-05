@@ -331,7 +331,7 @@ class _SignUpState extends State<SignUp> {
                                 backgroundColor:
                                     Colors.grey.shade200.withOpacity(0.3),
                                 child: _imageFile == null
-                                    ? Icon(FontAwesomeIcons.user,
+                                    ? FaIcon(FontAwesomeIcons.user,
                                         color: kWhite, size: size.width * 0.11)
                                     : CircleAvatar(
                                         radius: size.width * 0.13,
@@ -387,7 +387,7 @@ class _SignUpState extends State<SignUp> {
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(color: Colors.white54),
-                                prefixIcon: const Icon(
+                                prefixIcon: const FaIcon(
                                     FontAwesomeIcons.envelope,
                                     color: Colors.white),
                                 enabledBorder: OutlineInputBorder(
@@ -481,7 +481,7 @@ class _SignUpState extends State<SignUp> {
                                     .textTheme
                                     .bodyLarge!
                                     .copyWith(color: Colors.white54),
-                                prefixIcon: const Icon(FontAwesomeIcons.key,
+                                prefixIcon: const FaIcon(FontAwesomeIcons.key,
                                     color: Colors.white),
                                 enabledBorder: OutlineInputBorder(
                                   borderSide:

@@ -15,6 +15,12 @@ const Register = () => {
     const [errors, setErrors] = useState({});
     const [getall, setGetAll] = useState('');
     const [verifyresponse, setverifyresponse] = useState('false');
+    // GDPR-TASK-24: two separate consent flags. `consentAccepted` is mandatory (you cannot create
+    // an account without agreeing to the Privacy Policy / Terms - GDPR Art. 6/7 lawful basis).
+    // `marketingOptIn` is optional and unbundled from account creation, since GDPR consent must
+    // be "specific" and "granular" (GDPR Art. 4(11)) rather than one all-or-nothing checkbox.
+    const [consentAccepted, setConsentAccepted] = useState(false);
+    const [marketingOptIn, setMarketingOptIn] = useState(false);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -75,6 +81,14 @@ const Register = () => {
             isValid = false;
         } else if (!/^\d{10}$/.test(mobilenumber)) {
             newErrors.mobilenumber = 'Invalid mobile number';
+            isValid = false;
+        }
+
+        // GDPR-TASK-24: mandatory consent must be checked before the form can submit. This is a
+        // UX convenience only - the backend (UserRegisterController#register, GDPR-TASK-05) is
+        // the real enforcement point and will reject registration even if this check is bypassed.
+        if (!consentAccepted) {
+            newErrors.consent = 'You must accept the Privacy Policy and Terms of Service to continue';
             isValid = false;
         }
 
@@ -225,6 +239,11 @@ const Register = () => {
             formData.append("password", password);
             formData.append("confirmPassword", confirmpassword);
             formData.append("mobnum", mobilenumber);
+            // GDPR-TASK-24: send the consent flags captured on this form to the backend so they
+            // are persisted on the account (see UserRegister.consentGiven/marketingOptIn).
+            formData.append("consentGiven", consentAccepted);
+            formData.append("marketingOptIn", marketingOptIn);
+            formData.append("termsVersion", "v1.0");
 
             const registrationResponse = await axios.post(
                 `${API_URL}/api/v2/userregister`,
@@ -376,6 +395,37 @@ const Register = () => {
                         {errors.mobilenumber && (
                             <p style={{ color: 'red' }}>{errors.mobilenumber}</p>
                         )}
+
+                        {/* GDPR-TASK-24: mandatory + granular optional consent checkboxes. */}
+                        <div style={{ margin: '12px 0' }}>
+                            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={consentAccepted}
+                                    onChange={(e) => setConsentAccepted(e.target.checked)}
+                                />
+                                <span>
+                                    I agree to the{' '}
+                                    <Link to="/PrivacyPolicy" style={{ textDecoration: 'underline' }}>
+                                        Privacy Policy
+                                    </Link>{' '}
+                                    and Terms of Service. *
+                                </span>
+                            </label>
+                            {errors.consent && <p style={{ color: 'red' }}>{errors.consent}</p>}
+
+                            <label style={{ display: 'flex', alignItems: 'flex-start', gap: '8px', cursor: 'pointer', marginTop: '8px' }}>
+                                <input
+                                    type="checkbox"
+                                    checked={marketingOptIn}
+                                    onChange={(e) => setMarketingOptIn(e.target.checked)}
+                                />
+                                <span>
+                                    (Optional) Send me offers and updates by email. You can withdraw this anytime
+                                    from your profile.
+                                </span>
+                            </label>
+                        </div>
 
                         <button
                             type="submit"

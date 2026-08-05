@@ -56,8 +56,20 @@ public class UserRegisterController {
 		        @RequestParam("email") String email,
 		        @RequestParam("password") String password,
 		        @RequestParam("mobnum") String mobnum,
+		        // GDPR-TASK-05: Consent must be captured explicitly at the point of registration and
+		        // registration is refused if it is missing (GDPR Art. 6/7 - no lawful basis without consent).
+		        @RequestParam(value = "consentGiven", defaultValue = "false") boolean consentGiven,
+		        @RequestParam(value = "marketingOptIn", defaultValue = "false") boolean marketingOptIn,
+		        @RequestParam(value = "termsVersion", defaultValue = "v1.0") String termsVersion,
 		        @RequestParam(value = "profile", required = false) MultipartFile profile) {
 		    try {
+		        // GDPR-TASK-05 (cont.): Reject the request server-side. The checkbox on the frontend
+		        // (see Register.js) is not sufficient on its own - the API is the enforcement point.
+		        if (!consentGiven) {
+		            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+		                    .body("{\"message\": \"You must accept the Privacy Policy and Terms of Service to create an account.\"}");
+		        }
+
 		        // Encrypt the password and confirmPassword
 		        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 		        String encodedPassword = passwordEncoder.encode(password);
@@ -71,6 +83,12 @@ public class UserRegisterController {
 		        newRegister.setPassword(encodedPassword);
 		        newRegister.setMobnum(mobnum);
 		        newRegister.setDate(parsedDate);
+
+		        // GDPR-TASK-01/02/03/04: persist consent state gathered above.
+		        newRegister.setConsentGiven(true);
+		        newRegister.setConsentTimestamp(LocalDateTime.now());
+		        newRegister.setMarketingOptIn(marketingOptIn);
+		        newRegister.setTermsVersion(termsVersion);
 
 		        // Handle profile image
 		        if (profile != null && !profile.isEmpty()) {

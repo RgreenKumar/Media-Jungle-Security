@@ -129,7 +129,61 @@ const ViewProfile = () => {
         }
     };
 
-    if (loading) return <div>Loading...</div>;
+    // GDPR-TASK-25: Right to Access / Data Portability - downloads the JSON produced by
+    // GdprController#exportData (see backend GDPR-TASK-08/12) as a file the user can keep.
+    const handleDownloadMyData = async () => {
+        try {
+            const response = await fetch(`${API_URL}/api/gdpr/export/${userId}`, {
+                headers: { 'Authorization': jwtToken },
+            });
+            if (!response.ok) throw new Error('Failed to export data');
+            const data = await response.json();
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `my-data-export-${userId}.json`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error('Error exporting data:', error);
+            Swal.fire({ icon: 'error', title: 'Could not export your data', text: 'Please try again later.' });
+        }
+    };
+
+    // GDPR-TASK-25: Right to Erasure - calls GdprController#eraseData (GDPR-TASK-09/13), after an
+    // explicit double confirmation since this action anonymises the account irreversibly.
+    const handleDeleteMyAccount = async () => {
+        const confirm = await Swal.fire({
+            icon: 'warning',
+            title: 'Delete your account?',
+            text: 'This permanently anonymises your personal data and cannot be undone.',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, delete my account',
+            confirmButtonColor: '#d33',
+        });
+        if (!confirm.isConfirmed) return;
+
+        try {
+            const response = await fetch(`${API_URL}/api/gdpr/erase/${userId}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': jwtToken },
+            });
+            if (!response.ok) throw new Error('Failed to erase account');
+            Swal.fire({ icon: 'success', title: 'Account deleted', text: 'Your data has been erased.' })
+                .then(() => {
+                    sessionStorage.clear();
+                    window.location.href = '/UserLogin';
+                });
+        } catch (error) {
+            console.error('Error deleting account:', error);
+            Swal.fire({ icon: 'error', title: 'Could not delete your account', text: 'Please try again later.' });
+        }
+    };
+
+
     if (error) return <div>Error: {error}</div>;
 
     return (
@@ -243,6 +297,29 @@ const ViewProfile = () => {
                                 </button>
                             </div>
                         )}
+
+                        {/* GDPR-TASK-25: self-service data-subject-rights controls. */}
+                        <div className="mt-6 p-4 rounded-lg border border-gray-600">
+                            <h3 className="text-white text-lg mb-2">Privacy &amp; Your Data</h3>
+                            <p className="text-sm text-gray-300 mb-3">
+                                Manage the personal data we hold about you, in line with our{' '}
+                                <NavLink to="/PrivacyPolicy" className="underline">Privacy Policy</NavLink>.
+                            </p>
+                            <div className="flex gap-3 flex-wrap">
+                                <button
+                                    onClick={handleDownloadMyData}
+                                    className="bg-blue-500 text-white p-2 rounded-lg text-sm hover:bg-blue-700"
+                                >
+                                    Download my data
+                                </button>
+                                <button
+                                    onClick={handleDeleteMyAccount}
+                                    className="bg-red-600 text-white p-2 rounded-lg text-sm hover:bg-red-800"
+                                >
+                                    Delete my account
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 ) : (
                     <NavLink to='/UserLogin' className='bg-subMain transitions hover:bg-main flex-rows gap-4 text-white p-4 rounded-lg w-full text-center'>

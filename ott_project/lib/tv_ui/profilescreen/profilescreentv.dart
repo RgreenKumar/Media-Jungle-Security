@@ -605,13 +605,15 @@ class _TVActionButton extends StatelessWidget {
   final bool isFocused;
   final VoidCallback onTap;
   final double fontSize;
+
   const _TVActionButton({
+    Key? key,
     required this.label,
     required this.icon,
     required this.isFocused,
     required this.onTap,
     required this.fontSize,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

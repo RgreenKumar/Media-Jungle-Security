@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 
 class MyTextFieldTV extends StatelessWidget {
   final TextEditingController controller;
-  final IconData icon;
+  final Object icon;
   final String hint;
   final TextInputType inputType;
   final TextInputAction inputAction;
@@ -42,7 +43,9 @@ class MyTextFieldTV extends StatelessWidget {
           style: TextStyle(color: Colors.white, fontSize: 12), // Smaller text
           decoration: InputDecoration(
             contentPadding: EdgeInsets.symmetric(vertical: 8, horizontal: 10), // Reduced padding
-            prefixIcon: Icon(icon, color: Colors.white, size: 12), // Smaller icon
+            prefixIcon: icon is FaIconData
+                ? FaIcon(icon as FaIconData, color: Colors.white, size: 12)
+                : Icon(icon as IconData, color: Colors.white, size: 12),
             hintText: hint,
             hintStyle: TextStyle(color: Colors.white54, fontSize: 10), // Smaller hint text
             border: OutlineInputBorder(

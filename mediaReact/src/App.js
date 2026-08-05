@@ -8,6 +8,9 @@ import "./css/style.css";
 // import './index.css';
 import API_URL from './Config';
 import { Toaster } from 'react-hot-toast'; // Import Toaster
+// GDPR-TASK-23: cookie consent banner, mounted globally below so it appears on every page
+// until the visitor makes a choice (see CookieConsent.js / GDPR-TASK-22).
+import CookieConsent from './CookieConsent';
 import AddUser from "./admin/AddUser";
 import Video_setting from "./admin/Video_setting";
 import Email_setting from "./admin/Email_setting";
@@ -186,6 +189,8 @@ const App = () => {
 
   <div >
        {/* <Router> */}
+       {/* GDPR-TASK-23: rendered outside <Routes> so it persists across every screen. */}
+       <CookieConsent />
        <Toaster
   position="top-right"
   reverseOrder={false}

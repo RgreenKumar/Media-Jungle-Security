@@ -1,5 +1,6 @@
 package com.VsmartEngine.MediaJungle.userregister;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -63,7 +64,26 @@ public class UserRegister {
 	@OneToOne
 	@JoinColumn(name = "Payment_details")
 	private PaymentUser paymentId;
-	
+
+	// GDPR-TASK-01: Explicit consent flag captured at registration (GDPR Art. 6 & 7 - lawful basis / consent).
+	// Registration is rejected server-side (see UserRegisterController#register) if this is not true.
+	@Column(name = "consent_given")
+	private boolean consentGiven = false;
+
+	// GDPR-TASK-02: Timestamp of when consent was given, required to prove consent was obtained (GDPR Art. 7(1)).
+	@Column(name = "consent_timestamp")
+	private LocalDateTime consentTimestamp;
+
+	// GDPR-TASK-03: Separate, granular opt-in for marketing communications, independent of the mandatory
+	// account-terms consent above (GDPR Art. 4(11) - consent must be "specific" and "unbundled").
+	@Column(name = "marketing_opt_in")
+	private boolean marketingOptIn = false;
+
+	// GDPR-TASK-04: Version of the Privacy Policy / Terms the user agreed to, so we can detect when a
+	// user needs to re-consent after a policy change (GDPR Art. 7(1) - accountability for consent).
+	@Column(name = "terms_version")
+	private String termsVersion;
+
 	public UserRegister() {
 		super();
 	}
@@ -171,5 +191,38 @@ public class UserRegister {
 
 	public void setWatchlaterIds(Set<Long> watchlaterIds) {
 		this.watchlaterIds = watchlaterIds;
+	}
+
+	// --- GDPR consent accessors (see GDPR-TASK-01..04 above) ---
+	public boolean isConsentGiven() {
+		return consentGiven;
+	}
+
+	public void setConsentGiven(boolean consentGiven) {
+		this.consentGiven = consentGiven;
+	}
+
+	public LocalDateTime getConsentTimestamp() {
+		return consentTimestamp;
+	}
+
+	public void setConsentTimestamp(LocalDateTime consentTimestamp) {
+		this.consentTimestamp = consentTimestamp;
+	}
+
+	public boolean isMarketingOptIn() {
+		return marketingOptIn;
+	}
+
+	public void setMarketingOptIn(boolean marketingOptIn) {
+		this.marketingOptIn = marketingOptIn;
+	}
+
+	public String getTermsVersion() {
+		return termsVersion;
+	}
+
+	public void setTermsVersion(String termsVersion) {
+		this.termsVersion = termsVersion;
 	}
 }
