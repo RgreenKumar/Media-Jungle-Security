@@ -17,6 +17,10 @@ public class MailSetting {
 	private String mailhostname;
 	private int mailportname;
 	private String emailid;
+<<<<<<< HEAD
+=======
+	@com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+>>>>>>> internship/main
 	private String password;
 	public MailSetting() {
 		super();

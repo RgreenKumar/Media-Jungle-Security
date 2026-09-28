@@ -167,7 +167,11 @@ public class LibraryController {
             // Return the list of WatchLaterDTO objects
             return ResponseEntity.ok(watchLaterDTOList);
         } else {
+<<<<<<< HEAD
             return ResponseEntity.notFound().build();
+=======
+            return ResponseEntity.ok(new ArrayList<>());
+>>>>>>> internship/main
         }
     }
     
@@ -301,7 +305,11 @@ public class LibraryController {
             // Return the list of WatchLaterDTO objects
             return ResponseEntity.ok(LikedsongDTOList);
         } else {
+<<<<<<< HEAD
             return ResponseEntity.notFound().build();
+=======
+            return ResponseEntity.ok(new ArrayList<>());
+>>>>>>> internship/main
         }
     }
     

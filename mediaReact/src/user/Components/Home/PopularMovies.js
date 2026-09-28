@@ -44,8 +44,13 @@ const PopularMovies = () => {
   useEffect(() => {
      
   
+<<<<<<< HEAD
     // fetch category data from the backend
     fetch(`${API_URL}/api/v2/videogetall`)
+=======
+    // fetch video data from the backend
+    fetch(`${API_URL}/api/v2/video/getall`)
+>>>>>>> internship/main
     .then(response => {
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -58,8 +63,11 @@ const PopularMovies = () => {
     })
     .catch(error => {
       console.error('Error fetching data:', error);
+<<<<<<< HEAD
     throw error;
 
+=======
+>>>>>>> internship/main
     });
 
       // fetch(`${API_URL}/api/GetvideoThumbnail`)
@@ -200,6 +208,7 @@ const PopularMovies = () => {
           {all && all.length > 0 ? (all.slice(0, all.length).map((movie, index) => (
             <div key={index} className="slider-item">
              <div className='border border-border p-1 hover:scale-95 transitions relative rounded overflow-hidden' style={{height: "16rem"}}>
+<<<<<<< HEAD
       <Link to={userid ?`/watchpage/${movie.moviename}`:"/UserLogin"} className='w-full' onClick={() => handlEdit(movie.id)} >
         <img 
         src={`data:image/png;base64,${vimage[index]}`}
@@ -209,6 +218,18 @@ const PopularMovies = () => {
       </Link>
       <div className='absolute flex-btn gap-2 bottom-0 right-0 left-0 bg-main bg-opacity-60 text-white px-4 py-3'>
         <h3 className='font-semibold truncate'>{movie.moviename}</h3>
+=======
+       <Link to={userid ?`/watchpage/${movie.videoTitle || movie.moviename || movie.id}`:"/UserLogin"} className='w-full' onClick={() => handlEdit(movie.id)} >
+        <img 
+        src={`${API_URL}/api/v2/${movie.id}/videothumbnail`}
+        alt={movie?.videoTitle || movie?.moviename} 
+        className='w-full h-64 object-cover' 
+        onError={(e) => { e.target.style.display = 'none'; }}
+        />
+      </Link>
+      <div className='absolute flex-btn gap-2 bottom-0 right-0 left-0 bg-main bg-opacity-60 text-white px-4 py-3'>
+        <h3 className='font-semibold truncate'>{movie.videoTitle || movie.moviename}</h3>
+>>>>>>> internship/main
       </div>
     </div>
             </div>

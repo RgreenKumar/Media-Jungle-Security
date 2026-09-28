@@ -28,6 +28,7 @@ public class EmailService {
 	// Send email with dynamic configuration and return success status
 	 public boolean sendEmail(String to, String subject, String body) {
 	     try {
+<<<<<<< HEAD
 	         // Retrieve mail configuration from the database
 	         Optional<MailSetting> mailConfigOpt = mailsettingrepository.findFirstByOrderByIdAsc();
 
@@ -77,6 +78,51 @@ public class EmailService {
 	         e.printStackTrace();
 	         logger.error("", e);
 	         return false; // Email sending failed
+=======
+	         Optional<MailSetting> mailConfigOpt = mailsettingrepository.findFirstByOrderByIdAsc();
+
+	         if (mailConfigOpt.isPresent()) {
+	             MailSetting mailConfig = mailConfigOpt.get();
+	             JavaMailSenderImpl mailSenderImpl = new JavaMailSenderImpl();
+	             mailSenderImpl.setHost(mailConfig.getMailhostname());
+	             mailSenderImpl.setPort(mailConfig.getMailportname());
+	             mailSenderImpl.setUsername(mailConfig.getEmailid());
+	             mailSenderImpl.setPassword(mailConfig.getPassword());
+
+	             Properties props = mailSenderImpl.getJavaMailProperties();
+	             props.put("mail.transport.protocol", "smtp");
+	             props.put("mail.smtp.auth", "true");
+	             props.put("mail.smtp.starttls.enable", "true");
+	             props.put("mail.smtp.connectiontimeout", "3000");
+	             props.put("mail.smtp.timeout", "3000");
+	             props.put("mail.smtp.writetimeout", "3000");
+
+	             if (mailConfig.getMailportname() == 465) {
+	                 props.put("mail.smtp.ssl.enable", "true");
+	             }
+
+	             SimpleMailMessage message = new SimpleMailMessage();
+	             message.setTo(to);
+	             message.setSubject(subject);
+	             message.setText(body);
+	             message.setFrom(mailConfig.getEmailid());
+	             mailSenderImpl.send(message);
+	             return true;
+	         } else if (mailSender != null) {
+	             SimpleMailMessage message = new SimpleMailMessage();
+	             message.setTo(to);
+	             message.setSubject(subject);
+	             message.setText(body);
+	             mailSender.send(message);
+	             return true;
+	         } else {
+	             logger.warn("No mail configuration found in database and default mailSender is null.");
+	             return false;
+	         }
+	     } catch (Exception e) {
+	         logger.error("Error sending email to {}: {}", to, e.getMessage());
+	         return false;
+>>>>>>> internship/main
 	     }
 	 }
 

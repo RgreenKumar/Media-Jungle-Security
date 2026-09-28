@@ -130,10 +130,32 @@ public class FileServiceImplementation implements FileService {
 
 	    private FileModel uploadFile(String path, MultipartFile file, boolean isVideo) throws IOException {
 	        FileModel fileModel = new FileModel();
+<<<<<<< HEAD
 	        String fileName = file.getOriginalFilename();
 	        String randomId = UUID.randomUUID().toString();
 	        String finalName = randomId.concat(fileName.substring(fileName.indexOf(".")));
 
+=======
+	        String originalFilename = file.getOriginalFilename();
+
+	        // ===========================================
+	        // Internship Security Enhancement
+	        // Feature : Secure File Upload Validation
+	        // ISO27001 Control : Secure File Handling
+	        // ===========================================
+	        // Prevent Path Traversal by sanitizing filename
+	        String sanitized = (originalFilename != null) ? originalFilename.replaceAll("\\.\\.[\\\\/]", "").replaceAll("[\\\\/:%*?\"<>|]", "_") : "file";
+	        String ext = "";
+	        int dotIndex = sanitized.lastIndexOf('.');
+	        if (dotIndex >= 0) {
+	            ext = sanitized.substring(dotIndex);
+	        } else {
+	            ext = isVideo ? ".mp4" : ".mp4";
+	        }
+
+	        // Generate UUID filename
+	        String finalName = UUID.randomUUID().toString() + ext;
+>>>>>>> internship/main
 	        String filePath = path + File.separator + finalName;
 
 	        File f = new File(path);

@@ -12,7 +12,17 @@ public interface AddUserRepository extends JpaRepository<AddUser, Long>{
     Optional<AddUser> findByUsername(String Username);
 	@Query("SELECT u FROM AddUser u WHERE u.email = ?1")
     Optional<AddUser> findByEmail(String email);
+<<<<<<< HEAD
 	@Query("SELECT u FROM AddUser u WHERE u.role=?1")
 	Optional<AddUser> findByRole(String role);
 
+=======
+	Optional<AddUser> findFirstByRole(String role);
+
+	default Optional<AddUser> findByRole(String role) {
+		return findFirstByRole(role);
+	}
+
+	java.util.List<AddUser> findAllByRole(String role);
+>>>>>>> internship/main
 }

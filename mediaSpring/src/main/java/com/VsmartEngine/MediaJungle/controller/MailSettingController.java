@@ -18,6 +18,11 @@ import com.VsmartEngine.MediaJungle.Container.VideoContainerController;
 import com.VsmartEngine.MediaJungle.model.MailSetting;
 import com.VsmartEngine.MediaJungle.repository.MailsettingRepository;
 
+<<<<<<< HEAD
+=======
+import org.springframework.security.access.prepost.PreAuthorize;
+
+>>>>>>> internship/main
 @RestController
 public class MailSettingController {
 	
@@ -26,6 +31,16 @@ public class MailSettingController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MailSettingController.class);
 
+<<<<<<< HEAD
+=======
+	// =======================================
+	// Internship Security Enhancement
+	// Feature: Role Based Access Control
+	// ISO27001 Control: Access Control
+	// =======================================
+	// RBAC: Only Admin Allowed to update Mail Settings
+	@PreAuthorize("hasRole('ADMIN')")
+>>>>>>> internship/main
 	public ResponseEntity<String> addOrUpdateMail(
 	        @RequestParam(value = "mailhostname", required = false) String mailhostname,
 	        @RequestParam(value = "mailportname", required = false) Integer mailportname,

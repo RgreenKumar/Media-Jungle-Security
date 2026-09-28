@@ -20,7 +20,11 @@
 		<start-class>com.VsmartEngine.MediaJungle</start-class>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+<<<<<<< HEAD
 		<java.version>17</java.version>
+=======
+		<java.version>21</java.version>
+>>>>>>> internship/main
    <!--  <javafx.version>19</javafx.version> -->
 	</properties>
 
@@ -146,6 +150,7 @@
 	<build>
 		<finalName>media</finalName>
 		<plugins>
+<<<<<<< HEAD
 		 <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -153,10 +158,16 @@
                     <mainClass>com.VsmartEngine.MediaJungle.MediaSpringApplication</mainClass> <!-- Main class with the main method -->
                 </configuration>
             </plugin>
+=======
+>>>>>>> internship/main
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 				<configuration>
+<<<<<<< HEAD
+=======
+					<mainClass>com.VsmartEngine.MediaJungle.MediaSpringApplication</mainClass>
+>>>>>>> internship/main
 					<excludes>
 						<exclude>
 							<groupId>org.projectlombok</groupId>
@@ -165,9 +176,30 @@
 					</excludes>
 				</configuration>
 			</plugin>
+<<<<<<< HEAD
 			 <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-war-plugin</artifactId>
+=======
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>21</source>
+					<target>21</target>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.36</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+>>>>>>> internship/main
                 <version>3.3.2</version>
                 <configuration>
                     <failOnMissingWebXml>false</failOnMissingWebXml>

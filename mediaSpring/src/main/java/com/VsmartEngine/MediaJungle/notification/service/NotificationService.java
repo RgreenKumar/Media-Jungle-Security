@@ -87,9 +87,15 @@ public class NotificationService {
         NotificationDetails Details= new NotificationDetails();
         Details.setHeading(heading);
         Details.setLink(Link);
+<<<<<<< HEAD
         if (file.isPresent()) { // Check if file is present (for approach 2)
             try {
                 Details.setNotimage(ImageUtils.compressImage(file.get().getBytes()));; 
+=======
+        if (file.isPresent() && !file.get().isEmpty()) { // Check if file is present and not empty
+            try {
+                Details.setNotimage(ImageUtils.compressImage(file.get().getBytes())); 
+>>>>>>> internship/main
             } catch (IOException e) {
                 e.printStackTrace();
                 logger.error("", e);

@@ -38,7 +38,12 @@ import com.VsmartEngine.MediaJungle.userregister.UserRegister;
 import com.VsmartEngine.MediaJungle.userregister.UserRegisterRepository;
 import com.VsmartEngine.MediaJungle.video.AddVideoDescriptionRepository;
 import com.VsmartEngine.MediaJungle.video.VideoDescription;
+<<<<<<< HEAD
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+=======
+import org.springframework.security.crypto.password.PasswordEncoder;
+import com.VsmartEngine.MediaJungle.security.PasswordSecurityUtil;
+>>>>>>> internship/main
 
 @CrossOrigin()
 @RestController
@@ -53,6 +58,15 @@ public class MobileAppController {
 
     @Autowired
     private TokenBlacklist tokenBlacklist;
+<<<<<<< HEAD
+=======
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private com.VsmartEngine.MediaJungle.security.PasswordPolicyService passwordPolicyService;
+>>>>>>> internship/main
     
     private static final Logger logger = LoggerFactory.getLogger(MobileAppController.class);
 //	@PostMapping("/register/mobile")
@@ -168,11 +182,22 @@ public class MobileAppController {
 //                existingUser.setPassword(encryptedPassword);
 //                existingUser.setConfirmPassword(encryptedPassword); // Assuming this is required
 //            }
+<<<<<<< HEAD
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             if (password != null) {
             	String encodedPassword = passwordEncoder.encode(password);
 	            existingUser.setPassword(encodedPassword);
 	        }
+=======
+            if (password != null && !password.trim().isEmpty()) {
+                com.VsmartEngine.MediaJungle.security.PasswordPolicyService.ValidationResult updatePolicy = passwordPolicyService.validate(password.trim());
+                if (!updatePolicy.isValid()) {
+                    return new ResponseEntity<>(updatePolicy.getErrorMessage(), HttpStatus.BAD_REQUEST);
+                }
+                String encodedPassword = PasswordSecurityUtil.encodeIfRaw(passwordEncoder, password.trim());
+                existingUser.setPassword(encodedPassword);
+            }
+>>>>>>> internship/main
 
 //	        if (confirmPassword!= null) {
 //	        	String confirmencodedPassword = passwordEncoder.encode(confirmPassword);

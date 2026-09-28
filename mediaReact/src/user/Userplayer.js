@@ -41,6 +41,23 @@ const Userplayer = () => {
       }
     });
 
+<<<<<<< HEAD
+=======
+    // Fallback to raw video stream if DASH stream is unavailable
+    player.on(dashjs.MediaPlayer.events.ERROR, () => {
+      console.warn("DASH stream error — falling back to direct video stream");
+      if (videoRef.current) {
+        videoRef.current.src = `${API_URL}/api/v2/${id}/videofile`;
+        videoRef.current.play().catch((e) => console.error("Playback error:", e));
+      }
+    });
+
+    // Also attach direct src to videoRef as initial source fallback
+    if (videoRef.current && !videoRef.current.src) {
+      videoRef.current.src = `${API_URL}/api/v2/${id}/videofile`;
+    }
+
+>>>>>>> internship/main
     return () => {
       if (playerRef.current) {
         playerRef.current.reset();

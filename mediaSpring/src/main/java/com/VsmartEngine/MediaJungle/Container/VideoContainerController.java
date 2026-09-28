@@ -142,6 +142,7 @@ public class VideoContainerController {
 	    // Step 3: Create a list to hold the custom response objects
 	    List<VideoContainerDTO> responseList = new ArrayList<>();
 
+<<<<<<< HEAD
 	    // Step 4: Iterate over each video container
 	    for (VideoContainer container : videoContainers) {
 	        // Extract category ID from the container
@@ -165,6 +166,37 @@ public class VideoContainerController {
 	    }
 
 	    // Step 8: Return the list of custom response objects
+=======
+	    // Fallback: If no containers exist but videos are uploaded, expose all videos under "Uploaded Videos"
+	    if (videoContainers.isEmpty() && !videos.isEmpty()) {
+	        VideoContainerDTO defaultContainer = new VideoContainerDTO("Uploaded Videos", 1L, videos);
+	        responseList.add(defaultContainer);
+	        return ResponseEntity.ok(responseList);
+	    }
+
+	    // Step 4: Iterate over each video container
+	    for (VideoContainer container : videoContainers) {
+	        Long categoryId = 1L;
+	        try {
+	            categoryId = Long.parseLong(container.getCategory());
+	        } catch (Exception e) {
+	            // Use fallback categoryId if container category is not numeric
+	        }
+	        
+	        List<VideoDescription> matchingVideos = new ArrayList<>();
+
+	        // Step 5: Filter videos by category ID, or include all if category list is empty
+	        for (VideoDescription video : videos) {
+	            if (video.getCategorylist() == null || video.getCategorylist().isEmpty() || video.getCategorylist().contains(categoryId)) {
+	                matchingVideos.add(video);
+	            }
+	        }
+
+	        VideoContainerDTO response = new VideoContainerDTO(container.getValue(), categoryId, matchingVideos);
+	        responseList.add(response);
+	    }
+
+>>>>>>> internship/main
 	    return ResponseEntity.ok(responseList);
 	}
 

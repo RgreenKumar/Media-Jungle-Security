@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '../Layout/Layout';
+<<<<<<< HEAD
 import { Link, useNavigate } from 'react-router-dom';
+=======
+import { Link, useNavigate, useParams } from 'react-router-dom';
+>>>>>>> internship/main
 import API_URL from '../../Config';
 import axios from 'axios';
 import leftarrowIcon from '../UserIcon/left slide icon.png';
@@ -9,6 +13,10 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const WatchPage = () => {
+<<<<<<< HEAD
+=======
+  const { id: paramId } = useParams();
+>>>>>>> internship/main
   const [getall, setgetall] = useState({});
   const [play, setPlay] = useState(false);
   const navigate = useNavigate();
@@ -25,6 +33,7 @@ const WatchPage = () => {
   const [index, setIndex] = useState(0);
   const DISPLAY_LIMIT = 5;
 
+<<<<<<< HEAD
   // Read stored item from localStorage
   useEffect(() => {
     const items = localStorage.getItem('items');
@@ -47,6 +56,35 @@ const WatchPage = () => {
       }
     }
   }, []);
+=======
+  // Read stored item from localStorage or fallback to URL parameter
+  useEffect(() => {
+    const items = localStorage.getItem('items');
+    let effectiveId = null;
+    let effectiveCatId = null;
+
+    if (items) {
+      try {
+        const parsed = JSON.parse(items);
+        if (parsed && typeof parsed === 'object' && parsed.id !== undefined) {
+          effectiveId = parsed.id;
+          effectiveCatId = parsed.categoryid;
+        } else {
+          effectiveId = parsed;
+        }
+      } catch {
+        effectiveId = items;
+      }
+    }
+
+    if (!effectiveId && paramId) {
+      effectiveId = paramId;
+    }
+
+    setId(effectiveId);
+    setCategoryid(effectiveCatId);
+  }, [paramId]);
+>>>>>>> internship/main
 
   // Fetch video details
   useEffect(() => {
@@ -59,7 +97,10 @@ const WatchPage = () => {
         setgetall(response.data);
         console.log('videoData', response.data);
       } catch (error) {
+<<<<<<< HEAD
         // ✅ FIX: Removed "throw error"
+=======
+>>>>>>> internship/main
         console.error('Error fetching video data:', error);
         setError('Failed to load video details.');
       }
@@ -77,7 +118,10 @@ const WatchPage = () => {
         const data = await response.text();
         setUser(data);
       } catch (error) {
+<<<<<<< HEAD
         // ✅ FIX: Removed "throw error"
+=======
+>>>>>>> internship/main
         console.error('Error fetching user access:', error);
       }
     };
@@ -92,6 +136,7 @@ const WatchPage = () => {
         const response = await axios.get(`${API_URL}/api/v2/Getvideocast`);
         if (response.data) {
           setvideocast(response.data);
+<<<<<<< HEAD
           const filteredCast = response.data.filter(
             (item) => item.videoDescription.id.toString() === String(id)
           );
@@ -99,6 +144,10 @@ const WatchPage = () => {
         }
       } catch (error) {
         // ✅ FIX: Removed "throw error"
+=======
+        }
+      } catch (error) {
+>>>>>>> internship/main
         console.error('Error fetching cast and crew:', error);
       }
     };
@@ -107,6 +156,7 @@ const WatchPage = () => {
 
   // Check if video is in watch later
   useEffect(() => {
+<<<<<<< HEAD
     if (!id || !userid) return;
     const checkWatchLater = async () => {
       setLoading(true);
@@ -118,6 +168,22 @@ const WatchPage = () => {
         setIsInWatchLater(response.data === true);
       } catch (error) {
         // ✅ FIX: Removed "throw error"
+=======
+    if (!id) {
+      setLoading(false);
+      return;
+    }
+    const checkWatchLater = async () => {
+      setLoading(true);
+      try {
+        if (userid) {
+          const response = await axios.get(`${API_URL}/api/v2/getwatchlater/video`, {
+            params: { videoId: id, userId: userid },
+          });
+          setIsInWatchLater(response.data === true);
+        }
+      } catch (error) {
+>>>>>>> internship/main
         console.error('Error checking watch later:', error);
         setIsInWatchLater(null);
       } finally {
@@ -132,6 +198,7 @@ const WatchPage = () => {
   };
 
   const handlePlayClick = (videoid) => {
+<<<<<<< HEAD
     handleEdit(videoid);
     setPlay(true);
     if (userid) {
@@ -139,6 +206,14 @@ const WatchPage = () => {
     } else {
       navigate('/UserLogin');
     }
+=======
+    const targetId = videoid || id;
+    if (targetId) {
+      localStorage.setItem('id', targetId);
+    }
+    setPlay(true);
+    navigate('/play');
+>>>>>>> internship/main
   };
 
   const handleEdit1 = (videoId, catId) => {

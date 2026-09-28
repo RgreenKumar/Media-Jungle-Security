@@ -17,6 +17,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
+<<<<<<< HEAD
+=======
+import org.springframework.security.access.prepost.PreAuthorize;
+>>>>>>> internship/main
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -224,6 +228,14 @@ public class FrontController {
            return AddUserController.checkAdminRole();
 	}
 
+<<<<<<< HEAD
+=======
+	@PostMapping("/resetAdminPassword")
+	public ResponseEntity<?> resetAdminPassword(@RequestParam String username, @RequestParam String newPassword, @RequestHeader(value = "Authorization", required = false) String token) {
+		return AddUserController.resetAdminPassword(username, newPassword, token);
+	}
+
+>>>>>>> internship/main
 	@DeleteMapping("/DeleteUser/{UserId}")
 	 public ResponseEntity<String> deleteUser(
 			    @RequestHeader("Authorization") String token, 
@@ -243,9 +255,25 @@ public class FrontController {
 	}
 
 	@PatchMapping("/UpdateUser/{userId}")
+<<<<<<< HEAD
 	public ResponseEntity<String> updateUserDetails(@PathVariable Long userId, @RequestBody AddUser updatedUserData) {
 
 		return AddUserController.updateUserDetails(userId, updatedUserData);
+=======
+	public ResponseEntity<String> updateUserDetails(@PathVariable Long userId, @RequestBody AddUser updatedUserData, @RequestHeader(value = "Authorization", required = false) String token) {
+
+		return AddUserController.updateUserDetails(userId, updatedUserData, token);
+	}
+
+	@PostMapping("/admin/staff/{id}/unlock")
+	public ResponseEntity<?> adminUnlockStaff(@PathVariable Long id, @RequestHeader("Authorization") String token) {
+		return AddUserController.adminUnlockStaff(id, token);
+	}
+
+	@PatchMapping("/admin/staff/{id}/status")
+	public ResponseEntity<?> adminUpdateStaffStatus(@PathVariable Long id, @RequestBody Map<String, String> body, @RequestHeader("Authorization") String token) {
+		return AddUserController.adminUpdateStaffStatus(id, body, token);
+>>>>>>> internship/main
 	}
 
 	 @PostMapping("/uploadaudio")
@@ -425,7 +453,11 @@ public class FrontController {
 
 		return FeatureController.getAllFeatures();
 	}
+<<<<<<< HEAD
 	@GetMapping("/GetAllCategories")
+=======
+	@GetMapping({"/GetAllCategories", "/categories"})
+>>>>>>> internship/main
 	public ResponseEntity<List<AddNewCategories>> getAllCategories() {
 
 		return CategoryController.getAllCategories();
@@ -1103,12 +1135,21 @@ public ResponseEntity<HttpStatus> deleteTenure(@PathVariable long id){
 				@RequestParam("castandcrewlist") List<Long> castandcrewlist,
 				@RequestParam("taglist") List<Long> taglist,
 				@RequestParam("categorylist") List<Long> categorylist,
+<<<<<<< HEAD
 				@RequestParam("videoThumbnail") MultipartFile videoThumbnail,
 				@RequestParam("trailerThumbnail") MultipartFile trailerThumbnail,
 				@RequestParam("userBanner") MultipartFile userBanner,
 				@RequestParam("video") MultipartFile video,
 		        @RequestParam("trailervideo") MultipartFile trailervideo,
 		        @RequestParam("advertisementTimings") List<String> advertisementTimings,
+=======
+				@RequestParam(value = "videoThumbnail", required = false) MultipartFile videoThumbnail,
+				@RequestParam(value = "trailerThumbnail", required = false) MultipartFile trailerThumbnail,
+				@RequestParam(value = "userBanner", required = false) MultipartFile userBanner,
+				@RequestParam(value = "video", required = false) MultipartFile video,
+		        @RequestParam(value = "trailervideo", required = false) MultipartFile trailervideo,
+		        @RequestParam(value = "advertisementTimings", required = false) List<String> advertisementTimings,
+>>>>>>> internship/main
 //		        @RequestParam("date") String date, // Add this line to accept the date as a string
 	            @RequestHeader("Authorization") String token){
 			return VideoController.uploadVideoDescription(videoTitle, mainVideoDuration, trailerDuration, rating, language,certificateNumber, videoAccessType,

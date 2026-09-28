@@ -51,6 +51,21 @@ public class LogManagement {
 	@Value("${logging.file.name}")
 	private String logfile;
 
+<<<<<<< HEAD
+=======
+	@Value("${spring.mail.host:smtp.gmail.com}")
+	private String mailHost;
+
+	@Value("${spring.mail.port:587}")
+	private int mailPort;
+
+	@Value("${spring.mail.username:}")
+	private String mailUsername;
+
+	@Value("${spring.mail.password:}")
+	private String mailPassword;
+
+>>>>>>> internship/main
 	 @Autowired
 	 private MailsettingRepository mailsettingrepository;
 	 
@@ -224,6 +239,7 @@ public class LogManagement {
 		boolean isvalid = (!opkeys1.isEmpty() && !opkeys1.get(0).getMailhostname().isEmpty()
 				&& !(opkeys1.get(0).getMailportname()==0) && !opkeys1.get(0).getEmailid().isEmpty()
 				&& !opkeys1.get(0).getPassword().isEmpty());
+<<<<<<< HEAD
 //		if (isvalid) {
 //			MailSetting keys = opkeys1.get(0);
 //			JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
@@ -250,14 +266,44 @@ public class LogManagement {
 			mailSender.setPassword("$Meganar1"); // Set password
 
 			// Optional properties for TLS/SSL, protocol, etc.
+=======
+		if (isvalid) {
+			MailSetting keys = opkeys1.get(0);
+			JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+			mailSender.setHost(keys.getMailhostname());
+			mailSender.setPort(keys.getMailportname());
+			sender_mail_id = keys.getEmailid();
+			mailSender.setUsername(keys.getEmailid());
+			mailSender.setPassword(keys.getPassword());
+
+>>>>>>> internship/main
 			Properties props = mailSender.getJavaMailProperties();
 			props.put("mail.transport.protocol", "smtp");
 			props.put("mail.smtp.auth", "true");
 			props.put("mail.smtp.starttls.enable", "true");
+<<<<<<< HEAD
 			props.put("mail.debug", "true"); // Optional, set to true for debugging
 
 			return mailSender;
 //		}
+=======
+
+			return mailSender;
+		} else {
+			JavaMailSenderImpl mailSender = new JavaMailSenderImpl();
+			mailSender.setHost(mailHost != null && !mailHost.isEmpty() ? mailHost : "smtp.gmail.com");
+			mailSender.setPort(mailPort > 0 ? mailPort : 587);
+			mailSender.setUsername(mailUsername);
+			mailSender.setPassword(mailPassword);
+
+			Properties props = mailSender.getJavaMailProperties();
+			props.put("mail.transport.protocol", "smtp");
+			props.put("mail.smtp.auth", "true");
+			props.put("mail.smtp.starttls.enable", "true");
+
+			return mailSender;
+		}
+>>>>>>> internship/main
 	}
 
 }

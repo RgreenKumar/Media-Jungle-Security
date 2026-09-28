@@ -16,10 +16,13 @@ import notificationIcon from '../admin/icon/notification.png'
 
 const Sidebar = ({ activeLink, setActiveLink}) => {
 
+<<<<<<< HEAD
 //   const [isCatsTagsOpen, setIsCatsTagsOpen] = useState(false);
 //   const [isUserAdminOpen, setIsUserAdminOpen] = useState(false);
 //   const [isMediaOpen, setIsMediaOpen] = useState(false);
 //   const [isLangCertiOpen, setIsLangCertiOpen] = useState(false);
+=======
+>>>>>>> internship/main
   const [isPlansTenureOpen, setIsPlansTenureOpen] = useState(false);
 
 //   const [isvalid, setIsvalid] = useState();
@@ -375,6 +378,7 @@ const [dropdownOpen, setDropdownOpen] = useState(false);
 // };
 
   const handleClick = (link) => {
+<<<<<<< HEAD
     setActiveLink(link);
     localStorage.setItem('activeLink', link); // Store the active link in local storage
     
@@ -393,6 +397,13 @@ const [dropdownOpen, setDropdownOpen] = useState(false);
       
         navigate(link);
     } 
+=======
+    if (setActiveLink) setActiveLink(link);
+    localStorage.setItem('activeLink', link);
+    if (link) {
+      navigate(link);
+    }
+>>>>>>> internship/main
   }
 // };
   const name=sessionStorage.getItem('username');
@@ -692,26 +703,42 @@ const handlePlanClick = () => {
     )}
 </li>
 <li className={`nav-item  ${activeLink === "/admin/Ads" ? 'active' : ''}`} onClick={() => handleClick("/admin/Ads")}>
+<<<<<<< HEAD
           <Link className="nav-link" >
           <i class="bi bi-gear-fill"></i>
+=======
+          <Link className="nav-link" to="/admin/Ads">
+          <i className="bi bi-gear-fill"></i>
+>>>>>>> internship/main
             <span> Ads</span>
           </Link>
       </li>
 
+<<<<<<< HEAD
       {/* <div className="sb-sidenav-menu-heading bg-primary text-white text-center">
         <div className="sidebar-brand-text mx-3">Settings</div>
       </div> */}
       <li className={`nav-item  ${activeLink === "/admin/SiteSetting" ? 'active' : ''}`} onClick={() => handleClick("/admin/SiteSetting")}>
           <Link className="nav-link" >
           <i class="bi bi-gear-fill"></i>
+=======
+      <li className={`nav-item  ${activeLink === "/admin/SiteSetting" ? 'active' : ''}`} onClick={() => handleClick("/admin/SiteSetting")}>
+          <Link className="nav-link" to="/admin/SiteSetting">
+          <i className="bi bi-gear-fill"></i>
+>>>>>>> internship/main
             <span> Settings</span>
           </Link>
       </li>
       <li className={`nav-item  ${activeLink === "/admin/About_us" ? 'active' : ''}`} onClick={() => handleClick("/admin/About_us")}>
+<<<<<<< HEAD
           <Link className="nav-link" >
           <i class="bi bi-house"></i>
 
 
+=======
+          <Link className="nav-link" to="/admin/About_us">
+          <i className="bi bi-house"></i>
+>>>>>>> internship/main
             <span> About-Us</span>
           </Link>
       </li>

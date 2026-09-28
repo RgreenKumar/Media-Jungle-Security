@@ -21,33 +21,69 @@ const LibraryScreen = () => {
   const fetchWatchLater = async () => {
     try {
       const user = Number(userid);
+<<<<<<< HEAD
       const response = await axios.get(`${API_URL}/api/v2/${user}/Watchlater`);
       setWatchlater(response.data);
     } catch (error) {
       console.error('Error fetching Watch Later videos:', error);
       throw error;
+=======
+      if (!user) {
+        setWatchlater([]);
+        return;
+      }
+      const response = await axios.get(`${API_URL}/api/v2/${user}/Watchlater`);
+      setWatchlater(response.data || []);
+    } catch (error) {
+      console.error('Error fetching Watch Later videos:', error);
+      setWatchlater([]);
+>>>>>>> internship/main
     }
   };
 
   const fetchlikedmusic = async () => {
     try {
       const user = Number(userid);
+<<<<<<< HEAD
       const response = await axios.get(`${API_URL}/api/v2/${user}/UserAudios`);
       setLikesSongs(response.data);
     } catch (error) {
       console.error('Error fetching Watch Later videos:', error);
       throw error;
+=======
+      if (!user) {
+        setLikesSongs([]);
+        return;
+      }
+      const response = await axios.get(`${API_URL}/api/v2/${user}/UserAudios`);
+      setLikesSongs(response.data || []);
+    } catch (error) {
+      console.error('Error fetching liked music:', error);
+      setLikesSongs([]);
+>>>>>>> internship/main
     }
   };
 
   const fetchPlaylist = async () => {
     try {
       const user = Number(userid);
+<<<<<<< HEAD
       const response = await axios.get(`${API_URL}/api/v2/user/${user}/playlists`);
       setPlaylist(response.data);
     } catch (error) {
       console.error('Error fetching Watch Later videos:', error);
       throw error;
+=======
+      if (!user) {
+        setPlaylist([]);
+        return;
+      }
+      const response = await axios.get(`${API_URL}/api/v2/user/${user}/playlists`);
+      setPlaylist(response.data || []);
+    } catch (error) {
+      console.error('Error fetching playlists:', error);
+      setPlaylist([]);
+>>>>>>> internship/main
     }
   };
 

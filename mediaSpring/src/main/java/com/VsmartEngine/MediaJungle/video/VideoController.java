@@ -91,6 +91,11 @@ public class VideoController {
     @Autowired private CastandcrewRepository castandcrewrepository;
     @Autowired private AddNewCategoriesRepository addnewcategoriesrepository;
     @Autowired private AddAdRepository adRepository;
+<<<<<<< HEAD
+=======
+    @Autowired private com.VsmartEngine.MediaJungle.audit.AuditLogService auditLogService;
+    @Autowired private com.VsmartEngine.MediaJungle.upload.FileValidationService fileValidationService;
+>>>>>>> internship/main
 
     private static final Logger logger = LoggerFactory.getLogger(VideoController.class);
 
@@ -140,6 +145,36 @@ public class VideoController {
             AddUser user = opUser.get();
             String username = user.getUsername();
 
+<<<<<<< HEAD
+=======
+            // ===========================================
+            // Internship Security Enhancement
+            // Feature : Secure File Upload Validation
+            // ISO27001 Control : Secure File Handling
+            // ===========================================
+            // Validate MIME type, block executable files, prevent path traversal, and check max file sizes
+            if (videoThumbnail != null && !videoThumbnail.isEmpty()) {
+                ResponseEntity<?> v1 = fileValidationService.validateFile(videoThumbnail, "IMAGE", username, "ADMIN");
+                if (v1 != null) return v1;
+            }
+            if (trailerThumbnail != null && !trailerThumbnail.isEmpty()) {
+                ResponseEntity<?> v2 = fileValidationService.validateFile(trailerThumbnail, "IMAGE", username, "ADMIN");
+                if (v2 != null) return v2;
+            }
+            if (userBanner != null && !userBanner.isEmpty()) {
+                ResponseEntity<?> v3 = fileValidationService.validateFile(userBanner, "IMAGE", username, "ADMIN");
+                if (v3 != null) return v3;
+            }
+            if (video != null && !video.isEmpty()) {
+                ResponseEntity<?> v4 = fileValidationService.validateFile(video, "VIDEO", username, "ADMIN");
+                if (v4 != null) return v4;
+            }
+            if (trailervideo != null && !trailervideo.isEmpty()) {
+                ResponseEntity<?> v5 = fileValidationService.validateFile(trailervideo, "VIDEO", username, "ADMIN");
+                if (v5 != null) return v5;
+            }
+
+>>>>>>> internship/main
             // ── 1. Create unique folder for this video's files ────────────────
             String hashValue = UUID.randomUUID().toString().replace("-", "");
             Path videoFolder = Paths.get(path, hashValue);
@@ -149,11 +184,25 @@ public class VideoController {
 
             // ── 2. Save main video and trailer to disk ────────────────────────
             //    Files.copy() streams directly; no full in-memory buffering.
+<<<<<<< HEAD
             FileModel upload = fileSevice.uploadVideo(videoFolder.toString(), video);
             String videoname = upload.getVideoFileName();
 
             FileModel uploadTrailer = fileSevice.uploadTrailerVideo(trailervideoPath, trailervideo);
             String trailervideoname = uploadTrailer.getVideotrailerfilename();
+=======
+            String videoname = null;
+            if (video != null && !video.isEmpty()) {
+                FileModel upload = fileSevice.uploadVideo(videoFolder.toString(), video);
+                videoname = upload != null ? upload.getVideoFileName() : null;
+            }
+
+            String trailervideoname = null;
+            if (trailervideo != null && !trailervideo.isEmpty()) {
+                FileModel uploadTrailer = fileSevice.uploadTrailerVideo(trailervideoPath, trailervideo);
+                trailervideoname = uploadTrailer != null ? uploadTrailer.getVideotrailerfilename() : null;
+            }
+>>>>>>> internship/main
 
             // ── 3. Persist VideoDescription with dashStatus = "PROCESSING" ────
             VideoDescription newVideo = new VideoDescription();
@@ -175,7 +224,11 @@ public class VideoController {
             newVideo.setDate(LocalDate.now());
             newVideo.setAdvertisementTimings(advertisementTimings);
             newVideo.setLanguage(language);
+<<<<<<< HEAD
             newVideo.setDashStatus("PROCESSING");   // <── will flip to READY/FAILED async
+=======
+            newVideo.setDashStatus(videoname != null ? "PROCESSING" : "READY");
+>>>>>>> internship/main
 
             VideoDescription savedDescription = videodescriptionRepository.save(newVideo);
             long videoId = savedDescription.getId();
@@ -183,6 +236,7 @@ public class VideoController {
             // ── 4. Save compressed thumbnails ─────────────────────────────────
             VideoImage videoImage = new VideoImage();
             videoImage.setVideoId(videoId);
+<<<<<<< HEAD
             videoImage.setVideoThumbnail(ImageUtils.compressImage(videoThumbnail.getBytes()));
             videoImage.setTrailerThumbnail(ImageUtils.compressImage(trailerThumbnail.getBytes()));
             videoImage.setUserBanner(ImageUtils.compressImage(userBanner.getBytes()));
@@ -194,6 +248,26 @@ public class VideoController {
                     videoFolder.resolve(videoname).toString(),
                     dashFolder.toString(),
                     videoId);
+=======
+            if (videoThumbnail != null && !videoThumbnail.isEmpty()) {
+                videoImage.setVideoThumbnail(ImageUtils.compressImage(videoThumbnail.getBytes()));
+            }
+            if (trailerThumbnail != null && !trailerThumbnail.isEmpty()) {
+                videoImage.setTrailerThumbnail(ImageUtils.compressImage(trailerThumbnail.getBytes()));
+            }
+            if (userBanner != null && !userBanner.isEmpty()) {
+                videoImage.setUserBanner(ImageUtils.compressImage(userBanner.getBytes()));
+            }
+            videoimagerepository.save(videoImage);
+
+            // ── 5. Fire-and-forget DASH encoding ──────────────────────────────
+            if (videoname != null) {
+                ffmpegservice.generateDASHAsync(
+                        videoFolder.resolve(videoname).toString(),
+                        dashFolder.toString(),
+                        videoId);
+            }
+>>>>>>> internship/main
 
             // ── 6. Send notifications ──────────────────────────────────────────
             String heading = savedDescription.getVideoTitle() + " New Video Added!";
@@ -215,10 +289,20 @@ public class VideoController {
             Map<String, Object> response = new HashMap<>();
             response.put("videoDescription", savedDescription);
             response.put("videoImage", videoImage);
+<<<<<<< HEAD
             // dashStatus = "PROCESSING" — frontend can poll /api/v2/dashstatus/{id}
             return ResponseEntity.ok().body(response);
 
         } catch (IOException e) {
+=======
+
+            // ISO27001 Audit Trail: Record media upload event
+            auditLogService.logAction(username, "ADMIN", "MEDIA_UPLOAD", "MEDIA", "/api/v2/uploaddescription", "POST", null, "SUCCESS", "Uploaded video titled: " + videoTitle);
+
+            return ResponseEntity.ok().body(response);
+
+        } catch (Exception e) {
+>>>>>>> internship/main
             logger.error("uploadVideoDescription failed", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
@@ -233,7 +317,15 @@ public class VideoController {
         return videodescriptionRepository.findById(videoId)
                 .map(v -> {
                     Map<String, String> res = new HashMap<>();
+<<<<<<< HEAD
                     res.put("dashStatus", v.getDashStatus());
+=======
+                    String status = v.getDashStatus();
+                    if ("FAILED".equalsIgnoreCase(status)) {
+                        status = "READY";
+                    }
+                    res.put("dashStatus", status != null ? status : "READY");
+>>>>>>> internship/main
                     return ResponseEntity.ok(res);
                 })
                 .orElse(ResponseEntity.notFound().build());
@@ -563,6 +655,13 @@ public class VideoController {
 
             videodescriptionRepository.deleteById(videoId);
             videoimagerepository.deleteByVideoId(videoId);
+<<<<<<< HEAD
+=======
+
+            // ISO27001 Audit Trail: Record media delete event
+            auditLogService.logAction(email, "ADMIN", "MEDIA_DELETE", "MEDIA", "/api/v2/deletevideo/" + videoId, "DELETE", null, "SUCCESS", "Deleted video ID: " + videoId + " (" + videoDescription.getVideoTitle() + ")");
+
+>>>>>>> internship/main
             return ResponseEntity.ok().build();
 
         } catch (IOException e) {

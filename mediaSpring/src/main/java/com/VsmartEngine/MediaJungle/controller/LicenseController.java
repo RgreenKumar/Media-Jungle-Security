@@ -166,12 +166,16 @@ public class LicenseController {
 		
 
 		public ResponseEntity<Integer> count() {
+<<<<<<< HEAD
 			
+=======
+>>>>>>> internship/main
 			Iterable<License> licenseIterable = licenseRepository.findAll();
 	    	List<License> licenseList = StreamSupport.stream(licenseIterable.spliterator(), false)
 	    	                                         .collect(Collectors.toList());
 	    	
 			Long count = videodescription.count();
+<<<<<<< HEAD
 			String courseString=" ";
 //			System.out.println("out side for"+courseString==null);
 			for (License license : licenseList) {
@@ -206,6 +210,33 @@ public class LicenseController {
 				 return new ResponseEntity<>(401, HttpStatus.BAD_REQUEST);
 			}
 				
+=======
+			String courseString = "";
+			for (License license : licenseList) {
+				if (license.getCourse() != null && !license.getCourse().trim().isEmpty()) {
+					courseString = license.getCourse().trim();
+				}
+			}
+
+			if (courseString.isEmpty()) {
+				logger.info("No license course limit specified — allowing upload.");
+				return new ResponseEntity<>(200, HttpStatus.OK);
+			}
+
+			try {
+				Long course = Long.parseLong(courseString);
+				if (count < course) {
+					logger.info("Course count check passed: {} < {}", count, course);
+					return new ResponseEntity<>(200, HttpStatus.OK);
+				} else {
+					logger.info("Upload limit reached: current count {} >= limit {}", count, course);
+					return new ResponseEntity<>(400, HttpStatus.BAD_REQUEST);
+				}
+			} catch (NumberFormatException e) {
+				logger.warn("Invalid license course limit format '{}' — allowing upload.", courseString);
+				return new ResponseEntity<>(200, HttpStatus.OK);
+			}
+>>>>>>> internship/main
 		}
 		
 		 public boolean getall(){

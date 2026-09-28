@@ -17,6 +17,10 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+<<<<<<< HEAD
+=======
+import com.fasterxml.jackson.annotation.JsonProperty;
+>>>>>>> internship/main
 
 @Entity
 @Table
@@ -32,6 +36,10 @@ public class UserRegister {
 	@Column(unique = true)
 	private String email;
 	
+<<<<<<< HEAD
+=======
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+>>>>>>> internship/main
 	@Column(name="password")
 	private String password;
 	
@@ -41,7 +49,10 @@ public class UserRegister {
 	@Column(name="date")
 	private LocalDate date ;
 	
+<<<<<<< HEAD
 	@Lob
+=======
+>>>>>>> internship/main
 	@Column(name="profile" ,length=1000000)
 	private byte[] profile;
 	
@@ -63,6 +74,58 @@ public class UserRegister {
 	@OneToOne
 	@JoinColumn(name = "Payment_details")
 	private PaymentUser paymentId;
+<<<<<<< HEAD
+=======
+
+	// =======================================
+	// Internship Security Enhancement
+	// Feature: Role Based Access Control
+	// ISO27001 Control: Access Control
+	// =======================================
+	// RBAC: Default user role set to USER, column non-nullable
+	@Column(name = "role", nullable = false)
+	private String role = com.VsmartEngine.MediaJungle.security.UserRole.USER.name();
+
+	// ========================================
+	// Internship Security Enhancement
+	// Feature : Brute Force Protection
+	// ISO27001 Control : Secure Authentication
+	// ========================================
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	@Column(name = "failed_login_attempts")
+	private Integer failedLoginAttempts = 0;
+
+	@Column(name = "account_locked")
+	private Boolean accountLocked = false;
+
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	@Column(name = "account_locked_until")
+	private java.time.LocalDateTime accountLockedUntil;
+
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	@Column(name = "last_failed_login")
+	private java.time.LocalDateTime lastFailedLogin;
+
+	// ========================================
+	// SOC 2 Control 4: Multi-Factor Authentication
+	// ========================================
+	@Column(name = "mfa_enabled")
+	private Boolean mfaEnabled = false;
+
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	@Column(name = "mfa_secret")
+	private String mfaSecret;
+
+	@com.fasterxml.jackson.annotation.JsonIgnore
+	@Column(name = "mfa_backup_codes", columnDefinition = "TEXT")
+	private String mfaBackupCodes;
+
+	// ========================================
+	// SOC 2 Control 6: User Lifecycle Status
+	// ========================================
+	@Column(name = "status")
+	private String status = "ACTIVE";
+>>>>>>> internship/main
 	
 	public UserRegister() {
 		super();
@@ -172,4 +235,79 @@ public class UserRegister {
 	public void setWatchlaterIds(Set<Long> watchlaterIds) {
 		this.watchlaterIds = watchlaterIds;
 	}
+<<<<<<< HEAD
+=======
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
+
+	public int getFailedLoginAttempts() {
+		return failedLoginAttempts != null ? failedLoginAttempts : 0;
+	}
+
+	public void setFailedLoginAttempts(int failedLoginAttempts) {
+		this.failedLoginAttempts = failedLoginAttempts;
+	}
+
+	public boolean isAccountLocked() {
+		return accountLocked != null && accountLocked;
+	}
+
+	public void setAccountLocked(boolean accountLocked) {
+		this.accountLocked = accountLocked;
+	}
+
+	public java.time.LocalDateTime getAccountLockedUntil() {
+		return accountLockedUntil;
+	}
+
+	public void setAccountLockedUntil(java.time.LocalDateTime accountLockedUntil) {
+		this.accountLockedUntil = accountLockedUntil;
+	}
+
+	public java.time.LocalDateTime getLastFailedLogin() {
+		return lastFailedLogin;
+	}
+
+	public void setLastFailedLogin(java.time.LocalDateTime lastFailedLogin) {
+		this.lastFailedLogin = lastFailedLogin;
+	}
+
+	public boolean isMfaEnabled() {
+		return mfaEnabled != null && mfaEnabled;
+	}
+
+	public void setMfaEnabled(boolean mfaEnabled) {
+		this.mfaEnabled = mfaEnabled;
+	}
+
+	public String getMfaSecret() {
+		return mfaSecret;
+	}
+
+	public void setMfaSecret(String mfaSecret) {
+		this.mfaSecret = mfaSecret;
+	}
+
+	public String getMfaBackupCodes() {
+		return mfaBackupCodes;
+	}
+
+	public void setMfaBackupCodes(String mfaBackupCodes) {
+		this.mfaBackupCodes = mfaBackupCodes;
+	}
+
+	public String getStatus() {
+		return status != null ? status : "ACTIVE";
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+>>>>>>> internship/main
 }

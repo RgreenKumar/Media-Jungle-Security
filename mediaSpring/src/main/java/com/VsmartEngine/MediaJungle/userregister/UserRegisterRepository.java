@@ -18,6 +18,11 @@ public interface UserRegisterRepository extends JpaRepository<UserRegister, Long
 
 	@Query("SELECT u FROM UserRegister u WHERE u.email = ?1")
     Optional<UserRegister> findByEmail(String email);
+<<<<<<< HEAD
+=======
+
+    Optional<UserRegister> findByUsername(String username);
+>>>>>>> internship/main
 	
 //	 @Query("SELECT u FROM UserRegister u WHERE u.date >= :startDate")
 //	 List<UserRegister> findUsersRegisteredWithinLast15Days(LocalDate startDate);

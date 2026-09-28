@@ -37,8 +37,11 @@ function VideoHomescreen() {
         })
         .catch(error => {
           console.error('Error fetching data:', error);
+<<<<<<< HEAD
     throw error;
 
+=======
+>>>>>>> internship/main
         });
   
   
@@ -70,8 +73,11 @@ function VideoHomescreen() {
         }
       } catch (error) {
         console.error('Error fetching or processing image data:', error);
+<<<<<<< HEAD
     throw error;
 
+=======
+>>>>>>> internship/main
       }
     };
     const Navigation = (Id) => {

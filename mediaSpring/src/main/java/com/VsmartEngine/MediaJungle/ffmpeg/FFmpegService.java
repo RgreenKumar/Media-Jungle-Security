@@ -43,10 +43,17 @@ public class FFmpegService {
                 logger.info("[DASH] Completed for videoId={}", videoId);
             });
         } catch (Exception e) {
+<<<<<<< HEAD
             logger.error("[DASH] Failed for videoId={}", videoId, e);
             // Mark as FAILED so the admin can retry / know it failed
             videodescriptionRepository.findById(videoId).ifPresent(v -> {
                 v.setDashStatus("FAILED");
+=======
+            logger.warn("[DASH] Encoding skipped or failed for videoId={} (FFmpeg may not be installed). Marking video as READY.", videoId, e);
+            // Mark as READY so raw video upload succeeds without blocking
+            videodescriptionRepository.findById(videoId).ifPresent(v -> {
+                v.setDashStatus("READY");
+>>>>>>> internship/main
                 videodescriptionRepository.save(v);
             });
         }

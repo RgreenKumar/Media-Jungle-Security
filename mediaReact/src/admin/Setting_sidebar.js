@@ -28,7 +28,11 @@ const Setting = () => {
       {/* <i className="fas fa-tachometer-alt"></i> */}
     <span>Payment Settings</span>
   </Link>
+<<<<<<< HEAD
   <Link className="nav-link text-info" to="/admin/Email_setting"  style={{paddingLeft: '8px'}}>
+=======
+  <Link className="nav-link text-info" to="/admin/mailSetting"  style={{paddingLeft: '8px'}}>
+>>>>>>> internship/main
       {/* <i className="fas fa-tachometer-alt"></i> */}
     <span>Email Settings</span>
   </Link>

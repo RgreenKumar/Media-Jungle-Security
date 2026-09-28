@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 @charset "UTF-8";
 /*!
 * Start Bootstrap - SB Admin v7.0.3 (https://startbootstrap.com/template/sb-admin)
@@ -12362,3 +12363,16 @@ img {
 .audio-slider-track::-webkit-scrollbar {
   display: none;
 }
+=======
+/* App.css */
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+.navbar-brand {
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+>>>>>>> internship/main

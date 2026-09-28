@@ -29,6 +29,10 @@ public class Paymentsettings {
 	@Column (name ="razorpay_key")
 	private String razorpay_key;
 	
+<<<<<<< HEAD
+=======
+	@com.fasterxml.jackson.annotation.JsonProperty(access = com.fasterxml.jackson.annotation.JsonProperty.Access.WRITE_ONLY)
+>>>>>>> internship/main
 	@Column (name ="razorpay_secret_key")
 	private String razorpay_secret_key;
 	
